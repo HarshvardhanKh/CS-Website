@@ -11,7 +11,7 @@ export default function FooterWrapper() {
           "IEEE COMPUTER SOCIETY",
           "INNOVATION",
           "TECHNOLOGY",
-          "FUTURE"
+          "FUTURE",
           "IEEE CS"
         ]}
       />
