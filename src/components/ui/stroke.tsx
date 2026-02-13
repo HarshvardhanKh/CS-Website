@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import React, { useRef } from "react";
 import Footer from "@/src/components/common/Footer"
+import ImageTrail from "@/components/ImageTrail";
 
 
 const Skiper19 = () => {
@@ -30,12 +31,11 @@ const Skiper19 = () => {
       </div>
 
 
-
-      <div className="rounded-4xl font-jakarta-sans w-full translate-y-[200vh] bg-white pb-10 text-white">
+      <div className="rounded-4xl font-jakarta-sans w-full translate-y-[200vh] bg-white pb-10 text-black">
         <h1 className="mt-10 text-center text-[15.5vw] font-bold leading-[0.9] tracking-tighter lg:text-[16.6vw]">
-          ieee cs muj
+        hello 
         </h1>
-        
+        <div><ImageTrail/></div>
       </div>
     </section>
   );
