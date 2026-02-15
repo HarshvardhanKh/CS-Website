@@ -58,8 +58,8 @@ export default function Navbar() {
       <Link href={item.href}>
         <DecryptedText
           text={item.name}
-          speed={40}
-          maxIterations={6}
+          speed={70}
+          maxIterations={9}
           className="nav-text"
           encryptedClassName="nav-encrypted"
         />
