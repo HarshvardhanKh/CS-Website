@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef, useState } from 'react';
 import { 
   Linkedin, 
@@ -252,4 +253,8 @@ export default function Footer() {
       </div>
     </footer>
   );
+
 }
+
+}
+
