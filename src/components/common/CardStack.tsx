@@ -1,14 +1,13 @@
-import Image from "next/image";
 import styles from "@/src/components/common/CardStack.module.css";
 
 const images = [
-  "/images/events/1.svg",
-  "/images/events/2.svg",
-  "/images/events/3.svg",
-  "/images/events/4.svg",
-  "/images/events/5.svg",
-  "/images/events/6.svg",
-  "/images/events/7.svg",
+  "/images/events/1.png",
+  "/images/events/2.png",
+  "/images/events/3.png",
+  "/images/events/4.png",
+  "/images/events/5.png",
+  "/images/events/6.png",
+  "/images/events/7.png",
 ];
 export default function CardStack() {
   return (
@@ -18,16 +17,20 @@ export default function CardStack() {
       <div className={styles.cards}>
         {images.map((src, index) => (
           <div key={index} className={styles.card}>
-            <Image
+            <img
               src={src}
               alt={`card-${index}`}
-              fill
-              sizes="(max-width:768px) 100vw, 30vmin"
-              style={{ objectFit: "cover" }}
+              loading="eager"
+              decoding="async"
+              style={{ 
+                width: "100%", 
+                height: "100%", 
+                objectFit: "cover",
+                display: "block"
+              }}
             />
           </div>
         ))}
-      </div>
-    </section>
+      </div>    </section>
   );
 }

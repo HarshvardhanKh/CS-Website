@@ -100,11 +100,6 @@ export default function Footer() {
             className={`reveal ${isVisible ? 'active' : ''}`}
           >
             <div className="flex items-center gap-3 mb-6">
-              <img 
-                src="/ieee-cs-logo.png" 
-                alt="IEEE CS" 
-                className="w-12 h-12 object-contain"
-              />
               <div>
                 <h3 className="font-orbitron font-bold text-lg">IEEE CS</h3>
                 <p className="font-mono text-xs text-gray-500">MUJ Chapter</p>
