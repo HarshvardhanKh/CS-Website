@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DecryptedText from "@/components/DecryptedText";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,12 +23,10 @@ export default function Navbar() {
 
   const navItems = [
     { name: "About", href: "/" },
-    { name: "Team", href: "/team" },
+    { name: "Team", href: "/vfyg" },
     { name: "Events", href: "/idk" },
-    { name: "Blog THAT", href: "/what" },
-    { name: "Contact", href: "/about" },
-    { name: "IDk", href: "/event" },
-    { name: "Confused ", href: "/contact" }
+    { name: "Blog", href: "/what" },
+    { name: "Contact", href: "/lol" }
   ];
 
   return (
@@ -45,21 +44,30 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <span></span>
-          <span></span>
+          <span></span>. 
           <span></span>
         </div>
 
        
         <ul className={`nav-menu ${menuOpen ? "open" : ""}`}>
-          {navItems.map(item => (
-            <li
-              key={item.href}
-              className={pathname === item.href ? "active" : ""}
-            >
-              <Link href={item.href}>{item.name}</Link>
-            </li>
-          ))}
-        </ul>
+  {navItems.map(item => (
+    <li
+      key={item.href}
+      className={pathname === item.href ? "active" : ""}
+    >
+      <Link href={item.href}>
+        <DecryptedText
+          text={item.name}
+          speed={70}
+          maxIterations={9}
+          className="nav-text"
+          encryptedClassName="nav-encrypted"
+        />
+      </Link>
+    </li>
+  ))}
+</ul>
+
       </div>
     </nav>
   );
