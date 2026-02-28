@@ -1,5 +1,6 @@
 import LightFXBackground from '@/components/LightFXBackground';
 import TeamCard from '@/src/components/common/TeamCard';
+import LightRays from '@/components/LightRays';
 
 export default function TeamPage() {
   const executiveMembers = [
@@ -22,7 +23,13 @@ export default function TeamPage() {
 
   return (
     <>
+   
+
+    
       <LightFXBackground />
+     <div className="absolute inset-0 z-10 pointer-events-none">
+        <LightRays />
+      </div>
       {/* Spacer for navbar separation */}
       <div className="relative z-10 h-96"></div>
       

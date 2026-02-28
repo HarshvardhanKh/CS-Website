@@ -117,7 +117,17 @@ export default function Footer() {
         }}
       >
         {/* 4-column grid — columns sized to content, not equal fractions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pt-4 pb-6 items-start">
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr',
+            columnGap: '2rem',
+            rowGap: '2rem',
+            paddingTop: '1rem',
+            paddingBottom: '1.5rem',
+            alignItems: 'start',
+          }}
+        >
           {/* ── Col 1: Brand ── */}
           <div className={`reveal ${isVisible ? 'active' : ''}`} style={colStyle}>
             <div style={{ marginBottom: '1.25rem', width: '9rem' }}>
