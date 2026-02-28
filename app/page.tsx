@@ -38,16 +38,12 @@ export default function Home() {
       />
       
       <HorizontalGallery/>
-      <Footer/>
     </div>
     
     
       
-    <div><Skiper19 />
+    <div>
     <CardStack/>
-    </div>
-    <div style={{ height: "500px", position: "relative" }}>
-      <ImageHover/>
     </div>
     <div style={{ position: "relative", zIndex: 100 }}>
       <Footer/>
