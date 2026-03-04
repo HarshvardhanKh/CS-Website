@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
-import { 
-  Linkedin, 
-  Instagram, 
-  Github, 
+import {
+  Linkedin,
+  Instagram,
+  Github,
   MessageCircle,
   MapPin,
   Mail,
@@ -12,6 +12,7 @@ import {
   ExternalLink,
   Heart
 } from 'lucide-react';
+import styles from './Footer.module.css';
 
 export default function Footer() {
   const [isVisible, setIsVisible] = useState(false);
@@ -88,48 +89,25 @@ export default function Footer() {
     fontWeight: 'bold',
   };
 
+  const revealClass = `${styles.reveal} ${isVisible ? styles.active : ''}`;
+
   return (
     <footer
       ref={footerRef}
-      style={{
-        position: 'relative',
-        paddingBottom: '2rem',
-        overflow: 'hidden',
-        backgroundColor: '#000',
-        zIndex: 50,
-        width: '100%',
-        boxSizing: 'border-box',
-      }}
+      className={styles.footer}
       id="join"
     >
       {/* Gradient top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
 
       {/* Centered container */}
-      <div
-        style={{
-          width: '100%',
-          maxWidth: '1100px',
-          margin: '0 auto',
-          paddingLeft: '2rem',
-          paddingRight: '2rem',
-          boxSizing: 'border-box',
-        }}
-      >
-        {/* 4-column grid — columns sized to content, not equal fractions */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr',
-            columnGap: '2rem',
-            rowGap: '2rem',
-            paddingTop: '1rem',
-            paddingBottom: '1.5rem',
-            alignItems: 'start',
-          }}
-        >
+      <div className={styles.container}>
+
+        {/* Responsive 4→2→1 column grid */}
+        <div className={styles.grid}>
+
           {/* ── Col 1: Brand ── */}
-          <div className={`reveal ${isVisible ? 'active' : ''}`} style={colStyle}>
+          <div className={revealClass} style={colStyle}>
             <div style={{ marginBottom: '1.25rem', width: '9rem' }}>
               <img
                 src="/ieee-cs-logo.png"
@@ -140,7 +118,7 @@ export default function Footer() {
             <p style={{ color: '#9ca3af', fontSize: '0.875rem', lineHeight: '1.65', marginBottom: '1.75rem' }}>
               Advancing technology for humanity through innovation, education, and collaboration.
             </p>
-            <div style={{ display: 'flex', gap: '0.6rem' }}>
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
               {socialLinks.map((link) => (
                 <a
                   key={link.name}
@@ -169,10 +147,7 @@ export default function Footer() {
           </div>
 
           {/* ── Col 2: Quick Links ── */}
-          <div
-            className={`reveal ${isVisible ? 'active' : ''}`}
-            style={{ ...colStyle, transitionDelay: '0.1s' }}
-          >
+          <div className={revealClass} style={{ ...colStyle, transitionDelay: '0.1s' }}>
             <h4 className="font-orbitron" style={headingStyle}>
               <span style={{ color: '#f97316' }}>&gt;</span> Quick Links
             </h4>
@@ -189,10 +164,7 @@ export default function Footer() {
           </div>
 
           {/* ── Col 3: Resources ── */}
-          <div
-            className={`reveal ${isVisible ? 'active' : ''}`}
-            style={{ ...colStyle, transitionDelay: '0.2s' }}
-          >
+          <div className={revealClass} style={{ ...colStyle, transitionDelay: '0.2s' }}>
             <h4 className="font-orbitron" style={headingStyle}>
               <span style={{ color: '#f97316' }}>&gt;</span> Resources
             </h4>
@@ -208,7 +180,10 @@ export default function Footer() {
                   >
                     <span style={dotStyle} />
                     {link.name}
-                    <ExternalLink style={{ width: '0.7rem', height: '0.7rem', opacity: 0, marginLeft: 'auto' }} className="group-hover:opacity-100 transition-opacity" />
+                    <ExternalLink
+                      style={{ width: '0.7rem', height: '0.7rem', opacity: 0, marginLeft: 'auto' }}
+                      className="group-hover:opacity-100 transition-opacity"
+                    />
                   </a>
                 </li>
               ))}
@@ -216,10 +191,7 @@ export default function Footer() {
           </div>
 
           {/* ── Col 4: Contact ── */}
-          <div
-            className={`reveal ${isVisible ? 'active' : ''}`}
-            style={{ ...colStyle, transitionDelay: '0.3s' }}
-          >
+          <div className={revealClass} style={{ ...colStyle, transitionDelay: '0.3s' }}>
             <h4 className="font-orbitron" style={headingStyle}>
               <span style={{ color: '#f97316' }}>&gt;</span> Contact
             </h4>
@@ -237,7 +209,7 @@ export default function Footer() {
                 <a
                   href="mailto:contact@ieeecsmuj.com"
                   className="hover:text-orange-500 transition-colors"
-                  style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem' }}
+                  style={{ color: '#9ca3af', textDecoration: 'none', fontSize: '0.875rem', wordBreak: 'break-all' }}
                 >
                   contact@ieeecsmuj.com
                 </a>
@@ -257,34 +229,19 @@ export default function Footer() {
         </div>
 
         {/* ── Terminal bottom bar ── */}
-        <div
-          className={`reveal ${isVisible ? 'active' : ''}`}
-          style={{ borderTop: '0.001px solid rgba(249,115,22,0.2)', paddingTop: '0.01rem', transitionDelay: '0.4s' }}
-        >
-          <div
-            className="glass"
-            style={{
-              borderRadius: '100px',
-              padding: '0.35rem 0.35rem',
-              fontFamily: 'monospace',
-              fontSize: '0.875rem',
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '0.10rem',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.20rem', color: '#9ca3af' }}>
-              <span style={{ color: '#f97316', fontWeight: 'bold', fontSize: '1rem' }}>$</span>
-              <span>© 2024 IEEE CS MUJ. All systems operational.</span>
-              <span className="animate-pulse" style={{ color: '#f97316' }}>_</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.20rem', color: '#6b7280' }}>
-              <span>Made with</span>
-              <Heart style={{ width: '0.9rem', height: '0.9rem', color: '#ef4444', fill: '#ef4444' }} />
-              <span>by IEEE CS MUJ Team</span>
+        <div className={revealClass} style={{ transitionDelay: '0.4s' }}>
+          <div className={styles.bottomBar}>
+            <div className={styles.terminal}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.20rem', color: '#9ca3af' }}>
+                <span style={{ color: '#f97316', fontWeight: 'bold', fontSize: '1rem' }}>$</span>
+                <span>© 2024 IEEE CS MUJ. All systems operational.</span>
+                <span className="animate-pulse" style={{ color: '#f97316' }}>_</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.20rem', color: '#6b7280' }}>
+                <span>Made with</span>
+                <Heart style={{ width: '0.9rem', height: '0.9rem', color: '#ef4444', fill: '#ef4444' }} />
+                <span>by IEEE CS MUJ Team</span>
+              </div>
             </div>
           </div>
         </div>
@@ -306,29 +263,13 @@ export default function Footer() {
           userSelect: 'none',
         }}
       >
-        <span className="font-orbitron" style={{ fontSize: '22vw', fontWeight: 'bold', color: '#9ca3af', whiteSpace: 'nowrap' }}>
+        <span
+          className="font-orbitron"
+          style={{ fontSize: '22vw', fontWeight: 'bold', color: '#9ca3af', whiteSpace: 'nowrap' }}
+        >
           IEEE CS
         </span>
       </div>
-
-      <style jsx>{`
-        .reveal {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.6s ease-out;
-        }
-
-        .reveal.active {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .glass {
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(10px);
-          border: 2px solid rgba(249, 115, 22, 0.2);
-        }
-      `}</style>
     </footer>
   );
 }

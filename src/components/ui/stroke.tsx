@@ -15,14 +15,14 @@ const Skiper19 = () => {
   return (
     <section
       ref={ref}
-      className="mx-auto flex h-[350vh] w-screen flex-col items-center overflow-hidden bg-black px-4 text-white"
+      className="mx-auto flex h-[350vh] w-screen flex-col items-center overflow-hidden px-4 text-white"
     >
       <div className="mt-42 relative flex w-fit flex-col items-center justify-center gap-5 text-center">
         <h1 className="font-jakarta-sans relative z-10 text-7xl font-medium tracking-[-0.08em] lg:text-9xl">
           The Stroke <br /> That follows the <br />
           Scroll Progress
         </h1>
-        
+
 
         <LinePath
           className="absolute -right-[40%] top-0 z-0"
@@ -31,11 +31,11 @@ const Skiper19 = () => {
       </div>
 
 
-      <div className="rounded-4xl font-jakarta-sans w-full translate-y-[200vh] bg-white pb-10 text-black">
+      <div className="rounded-4xl font-jakarta-sans w-full translate-y-[200vh] pb-10 text-black bg-white">
         <h1 className="mt-10 text-center text-[15.5vw] font-bold leading-[0.9] tracking-tighter lg:text-[16.6vw]">
-        ieee cs muj
+          ieee cs muj
         </h1>
-        <div><ImageTrail/></div>
+        <div><ImageTrail /></div>
       </div>
     </section>
   );

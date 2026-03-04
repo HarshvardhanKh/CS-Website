@@ -21,7 +21,7 @@ export default function HorizontalGallery() {
       scrollTrigger: {
         trigger: scroller.current,
         pin: true,
-        scrub: 1,
+        scrub: 0.8,
         snap: 1 / (sections.length - 1),
         invalidateOnRefresh: true,
         anticipatePin: 1,
@@ -29,9 +29,13 @@ export default function HorizontalGallery() {
       },
     });
 
+    // Only kill this component's own ScrollTrigger — not every trigger on the page
+    const st = ScrollTrigger.getById(animation.vars?.scrollTrigger as string)
+      ?? animation.scrollTrigger;
+
     return () => {
+      st?.kill();
       animation.kill();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -39,7 +43,7 @@ export default function HorizontalGallery() {
     <div className="overflow-hidden">
       <div
         ref={scroller}
-        className="flex w-[400vw] h-screen bg-black text-white relative"
+        className="flex w-[400vw] min-h-screen text-white relative bg-transparent"
       >
         {/* SECTION 1 */}
         <section className="skill-set relative w-screen h-full flex items-center justify-center px-12">

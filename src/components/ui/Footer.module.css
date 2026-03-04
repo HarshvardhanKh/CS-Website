@@ -1,0 +1,100 @@
+/* ── Footer grid ── */
+.footer {
+    position: relative;
+    padding-bottom: 2rem;
+    overflow: hidden;
+    background-color: #000;
+    z-index: 50;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-sizing: border-box;
+}
+
+/* 4-column desktop grid */
+.grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    column-gap: 2rem;
+    row-gap: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    align-items: start;
+}
+
+/* ── Tablet (≤ 768px) → 2 columns ── */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1.5rem;
+        row-gap: 2rem;
+    }
+
+    .container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+/* ── Mobile (≤ 480px) → 1 column ── */
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+        row-gap: 2rem;
+    }
+
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* ── Bottom bar ── */
+.bottomBar {
+    border-top: 0.001px solid rgba(249, 115, 22, 0.2);
+    padding-top: 0.01rem;
+}
+
+.terminal {
+    border-radius: 100px;
+    padding: 0.35rem 0.35rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(249, 115, 22, 0.2);
+}
+
+@media (max-width: 480px) {
+    .terminal {
+        flex-direction: column;
+        border-radius: 14px;
+        text-align: center;
+        padding: 0.6rem 1rem;
+    }
+}
+
+/* ── Reveal animation ── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}

@@ -1,14 +1,13 @@
 .container {
-    margin: 0;
+    margin: 0 auto;
     min-height: 100vh;
-    background: black;
-
+    background: transparent !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 .heading {
@@ -20,92 +19,175 @@
 }
 
 .cards {
-    display: flex;
     position: relative;
+    width: 30vmin;
+    height: 50vmin;
+    margin: 0 auto;
+    overflow: visible;
 }
 
 .card {
-
     --offsetY: 0vmin;
     --offsetTranslateX: 0vmin;
-
     --rotate: 0deg;
     --translateX: 0vmin;
     --translateY: 0vmin;
-
-    position: relative;
-    flex-shrink: 0;
-
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 30vmin;
     height: 50vmin;
     border-radius: 5vmin;
     overflow: hidden;
-
-    transition: transform 0.5s ease;
-
+    transition: transform 1s ease;
     transform:
-        rotate(var(--rotate))
-        translateX(calc(var(--translateX) + var(--offsetTranslateX)))
-        translateY(calc(var(--translateY) + var(--offsetY)));
+        rotate(var(--rotate)) translateX(calc(var(--translateX) + var(--offsetTranslateX))) translateY(calc(var(--translateY) + var(--offsetY)));
 }
 
-.card:hover {
-    --offsetY: -5vmin;
-}
-
-.card:hover + .card { --offsetTranslateX: 15vmin; }
-.card:hover + .card + .card { --offsetTranslateX: 13vmin; }
-.card:hover + .card + .card + .card { --offsetTranslateX: 11vmin; }
-.card:hover + .card + .card + .card + .card { --offsetTranslateX: 7vmin; }
-
-.card:has(+ .card:hover) { --offsetTranslateX: -15vmin; }
-.card:has(+ .card + .card:hover) { --offsetTranslateX: -13vmin; }
-.card:has(+ .card + .card + .card:hover) { --offsetTranslateX: -11vmin; }
-.card:has(+ .card + .card + .card + .card:hover) { --offsetTranslateX: -7vmin; }
-
-
-.card:nth-child(1){
-    --rotate: -20deg;
-    --translateX: 45vmin;
-    --translateY: 30vmin;
+.card:nth-child(1) {
     z-index: 1;
 }
 
-.card:nth-child(2){
-    --rotate: -15deg;
-    --translateX: 30vmin;
-    --translateY: 15vmin;
+.card:nth-child(2) {
     z-index: 2;
 }
 
-.card:nth-child(3){
-    --rotate: -10deg;
-    --translateX: 15vmin;
-    --translateY: 5vmin;
+.card:nth-child(3) {
     z-index: 3;
 }
 
-.card:nth-child(4){
+.card:nth-child(4) {
     z-index: 4;
 }
 
-.card:nth-child(5){
-    --rotate: 10deg;
-    --translateX: -15vmin;
-    --translateY: 5vmin;
+.card:nth-child(5) {
     z-index: 3;
 }
 
-.card:nth-child(6){
-    --rotate: 15deg;
-    --translateX: -30vmin;
-    --translateY: 15vmin;
+.card:nth-child(6) {
     z-index: 2;
 }
 
-.card:nth-child(7){
-    --rotate: 20deg;
-    --translateX: -45vmin;
-    --translateY: 30vmin;
+.card:nth-child(7) {
     z-index: 1;
+}
+
+.cards.open .card:nth-child(1) {
+    --rotate: -16deg;
+    --translateX: -37vmin;
+    --translateY: -4vmin;
+}
+
+.cards.open .card:nth-child(2) {
+    --rotate: -10deg;
+    --translateX: -29vmin;
+    --translateY: -5vmin;
+}
+
+.cards.open .card:nth-child(3) {
+    --rotate: -7deg;
+    --translateX: -15vmin;
+    --translateY: -7vmin;
+}
+
+.cards.open .card:nth-child(4) {
+    --rotate: 0deg;
+    --translateX: 0vmin;
+    --translateY: -8vmin;
+}
+
+.cards.open .card:nth-child(5) {
+    --rotate: 7deg;
+    --translateX: 15vmin;
+    --translateY: -7vmin;
+}
+
+.cards.open .card:nth-child(6) {
+    --rotate: 10deg;
+    --translateX: 29vmin;
+    --translateY: -5vmin;
+}
+
+.cards.open .card:nth-child(7) {
+    --rotate: 16deg;
+    --translateX: 37vmin;
+    --translateY: -4vmin;
+}
+
+.cards.open .card:hover {
+    --offsetY: -5vmin;
+}
+
+.cards.open .card:hover+.card {
+    --offsetTranslateX: 15vmin;
+}
+
+.cards.open .card:hover+.card+.card {
+    --offsetTranslateX: 13vmin;
+}
+
+.cards.open .card:hover+.card+.card+.card {
+    --offsetTranslateX: 11vmin;
+}
+
+.cards.open .card:hover+.card+.card+.card+.card {
+    --offsetTranslateX: 7vmin;
+}
+
+.cards.open .card:has(+ .card:hover) {
+    --offsetTranslateX: -15vmin;
+}
+
+.cards.open .card:has(+ .card + .card:hover) {
+    --offsetTranslateX: -13vmin;
+}
+
+.cards.open .card:has(+ .card + .card + .card:hover) {
+    --offsetTranslateX: -11vmin;
+}
+
+.cards.open .card:has(+ .card + .card + .card + .card:hover) {
+    --offsetTranslateX: -7vmin;
+}
+
+@media (max-width: 768px) {
+    .cards {
+        width: 40vmin;
+        height: 60vmin;
+    }
+
+    .card {
+        width: 40vmin;
+        height: 60vmin;
+    }
+
+    .cards.open .card:nth-child(1) {
+        --translateX: -46vmin;
+    }
+
+    .cards.open .card:nth-child(2) {
+        --translateX: -34vmin;
+    }
+
+    .cards.open .card:nth-child(3) {
+        --translateX: -18vmin;
+    }
+
+    .cards.open .card:nth-child(5) {
+        --translateX: 18vmin;
+    }
+
+    .cards.open .card:nth-child(6) {
+        --translateX: 34vmin;
+    }
+
+    .cards.open .card:nth-child(7) {
+        --translateX: 46vmin;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
 }
