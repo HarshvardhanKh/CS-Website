@@ -25,8 +25,8 @@ export default function Navbar() {
   }, [pathname]);
 
   const navItems = [
-    { name: "About", href: "/" },
-    { name: "Home", href: "home" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "about" },
     { name: "Team", href: "/team" },
     { name: "Events", href: "/events" },
     { name: "Blog", href: "https://medium.com/@ieeecs" },
