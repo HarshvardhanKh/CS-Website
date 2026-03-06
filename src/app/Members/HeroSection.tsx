@@ -194,10 +194,21 @@ export default function HeroSection() {
       })
     })
 
-    ScrollTrigger.refresh()
+    // Delay refresh until after the browser has painted the new page DOM.
+    // Without this, ScrollTrigger calculates pin positions against stale
+    // layout values from the previous page visit, causing lag on navigation.
+    const refreshId = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh()
+      })
+    })
 
     return () => {
+      cancelAnimationFrame(refreshId)
       mm.revert()
+      // Kill all tweens on unmount so GSAP doesn't carry stale inline styles
+      // into the next visit
+      gsap.killTweensOf([contentRef.current, mobileContentRef.current, leftRef.current, rightRef.current, mobileHeroRef.current])
       ScrollTrigger.getAll().forEach((t) => t.kill())
     }
   }, [])

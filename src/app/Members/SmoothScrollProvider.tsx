@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, createContext, useContext } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const LenisContext = createContext<Lenis | null>(null)
 
@@ -24,16 +28,19 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
 
     lenisRef.current = lenis
 
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
+    // Connect Lenis scroll to GSAP ScrollTrigger so they stay in sync
+    lenis.on('scroll', ScrollTrigger.update)
 
-    const rafId = requestAnimationFrame(raf)
+    // Use GSAP ticker to drive Lenis instead of a raw rAF loop
+    // This avoids the RAF cleanup leak and keeps both systems on the same clock
+    const tickerFn = (time: number) => lenis.raf(time * 1000)
+    gsap.ticker.add(tickerFn)
+    gsap.ticker.lagSmoothing(0)
 
     return () => {
-      cancelAnimationFrame(rafId)
+      gsap.ticker.remove(tickerFn)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
 
