@@ -62,12 +62,12 @@ const GridCell = memo(function GridCell({
     const enterStart = 0.25 + delay;
     const enterEnd = Math.min(enterStart + 0.35, 0.95);
 
-    const heroScale = useTransform(scrollProgress, [0, 0.6], [3.2, 1]);
+    const heroScale = useTransform(scrollProgress, [0, 0.6], [2.5, 1]);
     const heroBorderRadius = useTransform(scrollProgress, [0, 0.5], [12, 4]);
 
-    const siblingOpacity = useTransform(scrollProgress, [enterStart, enterEnd], [0, 1]);
-    const siblingY = useTransform(scrollProgress, [enterStart, enterEnd], [dy * 80 + 40, 0]);
-    const siblingX = useTransform(scrollProgress, [enterStart, enterEnd], [dx * 25, 0]);
+    const siblingOpacity = useTransform(scrollProgress, [0, enterStart, enterEnd], [0, 0, 1]);
+    const siblingY = useTransform(scrollProgress, [enterStart, enterEnd], [`${dy * 80 + 40}px`, '0px']);
+    const siblingX = useTransform(scrollProgress, [enterStart, enterEnd], [`${dx * 25}px`, '0px']);
     const siblingScale = useTransform(scrollProgress, [enterStart, enterEnd], [0.82, 1]);
 
     const dimFilter = hasActive && !isActive ? 'grayscale(100%) brightness(0.5)' : 'none';
@@ -77,7 +77,7 @@ const GridCell = memo(function GridCell({
         return (
             <motion.div
                 layoutId={`img-${index}`}
-                className="relative overflow-hidden cursor-pointer"
+                className="relative w-full aspect-square overflow-hidden cursor-pointer"
                 onClick={gridComplete ? onClick : undefined}
                 style={{
                     scale: heroScale,
@@ -104,22 +104,18 @@ const GridCell = memo(function GridCell({
     return (
         <motion.div
             layoutId={`img-${index}`}
-            className="relative overflow-hidden cursor-pointer"
-            initial={{ opacity: 0 }}
+            className="relative w-full aspect-square overflow-hidden cursor-pointer"
             onClick={gridComplete ? onClick : undefined}
             style={{
-                opacity: siblingOpacity,
                 y: siblingY,
                 x: siblingX,
                 scale: siblingScale,
                 borderRadius: 4,
-                aspectRatio: '1/1',
-                willChange: 'transform, opacity',
                 zIndex: isActive ? 50 : 1,
             }}
             animate={{
                 filter: dimFilter,
-                opacity: hasActive && !isActive ? 0.6 : undefined,
+                opacity: hasActive && !isActive ? 0.6 : (gridComplete ? 1 : 0),
             }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
@@ -161,6 +157,8 @@ export default function ScrollGrid() {
         setActiveIndex((prev) => (prev === index ? null : index));
     };
 
+    const gridOpacity = useTransform(scrollYProgress, [0.85, 1], [1, 0]);
+
     return (
         <div ref={containerRef} style={{ height: '350vh', position: 'relative' }}>
             <div
@@ -173,6 +171,7 @@ export default function ScrollGrid() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    zIndex: 30,
                 }}
             >
                 <AnimatePresence>
@@ -211,24 +210,27 @@ export default function ScrollGrid() {
                     )}
                 </AnimatePresence>
 
-                <div
+                <motion.div
                     style={{
                         width: '100%',
                         height: '100%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        opacity: gridOpacity,
                     }}
                 >
                     <div
                         style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(5, 1fr)',
-                            gridTemplateRows: 'repeat(3, 1fr)',
+                            gridAutoRows: 'auto',
                             gap: 'clamp(4px, 1.2vw, 16px)',
                             width: 'min(96vw, 960px)',
                             height: 'max-content',
                             alignContent: 'center',
+                            zIndex: 20,
+                            position: 'relative'
                         }}
                     >
                         {Array.from({ length: 15 }).map((_, i) => (
@@ -242,7 +244,7 @@ export default function ScrollGrid() {
                             />
                         ))}
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );
