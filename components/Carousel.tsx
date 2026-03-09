@@ -1,310 +1,192 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { motion, PanInfo, useMotionValue, useTransform } from 'motion/react';
-import React, { JSX } from 'react';
+import { useState } from "react";
 
-// replace icons with your own if needed
-import { FiCircle, FiCode, FiFileText, FiLayers, FiLayout } from 'react-icons/fi';
-export interface CarouselItem {
-  title: string;
-  description: string;
-  id: number;
-  icon: React.ReactNode;
-}
-
-export interface CarouselProps {
-  items?: CarouselItem[];
-  baseWidth?: number;
-  autoplay?: boolean;
-  autoplayDelay?: number;
-  pauseOnHover?: boolean;
-  loop?: boolean;
-  round?: boolean;
-}
-
-const DEFAULT_ITEMS: CarouselItem[] = [
+const faqs = [
   {
-    title: 'FAQs',
-    description: 'Freq asked questions.',
-    id: 1,
-    icon: <FiFileText className="h-[16px] w-[16px] text-white" />
+    question: "How does SaaS differ from traditional software?",
+    answer: "SaaS is subscription-based and centrally hosted. Users pay a recurring fee to access the software over the internet, eliminating the need for upfront costs and ongoing maintenance.",
   },
   {
-    title: 'Who are we and what is our mission?',
-    description: 'We are a vibrant community of tech enthusiasts united by a common goal – to foster a dynamic coding environment through an exciting array of tech and semi-tech events. Our mission is to inspire innovation, collaboration, and continuous learning!',
-    id: 2,
-    icon: <FiCircle className="h-[16px] w-[16px] text-white" />
+    question: "How customizable is SaaS software?",
+    answer: "Most SaaS platforms offer a range of customization options including branding, workflows, and integrations via APIs — without requiring deep technical expertise.",
   },
   {
-    title: 'How can I join IEEE CS?',
-    description: 'Membership in IEEE CS is open to everyone. We conduct a yearly membership drive, providing an opportunity for all interested individuals to join our community.',
-    id: 3,
-    icon: <FiLayers className="h-[16px] w-[16px] text-white" />
+    question: "What happens to my data if I cancel my subscription?",
+    answer: "Typically, you'll have a grace period to export your data. After that, it may be permanently deleted per the vendor's data retention policy.",
   },
   {
-    title: 'Are there any prerequisites for joining the club?',
-    description: 'Absolutely! All you need is a genuine passion for technology and a determination to learn and grow together. We thrive on encouraging individuals and fostering a community of like-minded enthusiasts.',
-    id: 4,
-    icon: <FiLayout className="h-[16px] w-[16px] text-white" />
+    question: "What are the benefits of using SaaS?",
+    answer: "SaaS offers lower upfront costs, automatic updates, scalability, and accessibility from any device with an internet connection.",
   },
   {
-    title: 'What benefits do members receive?',
-    description: "As a member, you'll experience personal and professional growth. Your soft skills will flourish, your personality will expand, and you'll explore new horizons through a diverse range of free events tailored for our members. Membership isn't just about learning to code; it's about building a well-rounded skill set that extends beyond the digital workspace.",
-    id: 5,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />
+    question: "How does pricing work for SaaS products?",
+    answer: "SaaS pricing is usually tiered — based on users, features, or usage volume. Most vendors offer monthly or annual billing with discounts for longer commitments.",
   },
   {
-    title: 'What tech-related workshops or events have we conducted for our members?',
-    description: 'Our repertoire of tech-related workshops and events is extensive. To delve into the details, head over to our dedicated events section.',
-    id: 6,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />
+    question: "Is my data secure with SaaS providers?",
+    answer: "Reputable SaaS vendors implement enterprise-grade security including encryption, SOC 2 compliance, and regular third-party audits to keep your data protected.",
   },
   {
-    title: 'Why us? ',
-    description: "We're the world's largest technical society, offering exclusive internship opportunities and abundant tech resources online. Hosting the majority of tech events, we provide diverse skill development and networking opportunities. As a member, enjoy free access to a range of events. You can indulge in coding challenges within active groups, benefit from IEEE seniors' success stories, and explore research paper publications. Our family culture encourages collaboration, supported by dedicated seniors, allowing you to build valuable industry connections. Join us for a dynamic and supportive tech community.",
-    id: 7,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />
-  }
+    question: "Can I integrate SaaS tools with my existing stack?",
+    answer: "Yes — most modern SaaS platforms offer REST APIs, webhooks, and native integrations with popular tools like Slack, Zapier, Salesforce, and more.",
+  },
 ];
 
-const DRAG_BUFFER = 0;
-const VELOCITY_THRESHOLD = 500;
-const GAP = 16;
-const SPRING_OPTIONS = { type: 'spring' as const, stiffness: 300, damping: 30 };
-
-interface CarouselItemProps {
-  item: CarouselItem;
-  index: number;
-  itemWidth: number;
-  round: boolean;
-  trackItemOffset: number;
-  x: any;
-  transition: any;
-}
-
-function CarouselItem({ item, index, itemWidth, round, trackItemOffset, x, transition }: CarouselItemProps) {
-  const range = [-(index + 1) * trackItemOffset, -index * trackItemOffset, -(index - 1) * trackItemOffset];
-  const outputRange = [90, 0, -90];
-  const rotateY = useTransform(x, range, outputRange, { clamp: false });
-
-  return (
-    <motion.div
-      key={`${item?.id ?? index}-${index}`}
-      className={`relative shrink-0 flex flex-col ${round
-        ? 'items-center justify-center text-center bg-[#060010] border-0'
-        : 'items-start justify-between bg-[#222] border border-[#F4A119] rounded-[12px]'
-        } overflow-hidden cursor-grab active:cursor-grabbing`}
-      style={{
-        width: itemWidth,
-        height: round ? itemWidth : '100%',
-        rotateY: rotateY,
-        ...(round && { borderRadius: '50%' })
-      }}
-      transition={transition}
-    >
-      <div className={`${round ? 'p-0 m-0' : 'p-20 flex flex-col gap-1'}`}>
-        <h1 className="font-black text-2xl text-white">{item.title}</h1>
-        <h4 className="text-sm text-white">{item.description}</h4>
-      </div>
-    </motion.div >
-  );
-}
-
-export default function Carousel({
-  items = DEFAULT_ITEMS,
-  baseWidth = 1000,
-  autoplay = false,
-  autoplayDelay = 3000,
-  pauseOnHover = false,
-  loop = false,
-  round = false
-}: CarouselProps): JSX.Element {
-  const containerPadding = 25;
-  const itemWidth = baseWidth - containerPadding * 2;
-  const trackItemOffset = itemWidth + GAP;
-  const itemsForRender = useMemo(() => {
-    if (!loop) return items;
-    if (items.length === 0) return [];
-    return [items[items.length - 1], ...items, items[0]];
-  }, [items, loop]);
-
-  const [position, setPosition] = useState<number>(loop ? 1 : 0);
-  const x = useMotionValue(0);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isJumping, setIsJumping] = useState<boolean>(false);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (pauseOnHover && containerRef.current) {
-      const container = containerRef.current;
-      const handleMouseEnter = () => setIsHovered(true);
-      const handleMouseLeave = () => setIsHovered(false);
-      container.addEventListener('mouseenter', handleMouseEnter);
-      container.addEventListener('mouseleave', handleMouseLeave);
-      return () => {
-        container.removeEventListener('mouseenter', handleMouseEnter);
-        container.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-  }, [pauseOnHover]);
-
-  useEffect(() => {
-    if (!autoplay || itemsForRender.length <= 1) return undefined;
-    if (pauseOnHover && isHovered) return undefined;
-
-    const timer = setInterval(() => {
-      setPosition(prev => Math.min(prev + 1, itemsForRender.length - 1));
-    }, autoplayDelay);
-
-    return () => clearInterval(timer);
-  }, [autoplay, autoplayDelay, isHovered, pauseOnHover, itemsForRender.length]);
-
-  useEffect(() => {
-    const startingPosition = loop ? 1 : 0;
-    setPosition(startingPosition);
-    x.set(-startingPosition * trackItemOffset);
-  }, [items.length, loop, trackItemOffset, x]);
-
-  useEffect(() => {
-    if (!loop && position > itemsForRender.length - 1) {
-      setPosition(Math.max(0, itemsForRender.length - 1));
-    }
-  }, [itemsForRender.length, loop, position]);
-
-  const effectiveTransition = isJumping ? { duration: 0 } : SPRING_OPTIONS;
-
-  const handleAnimationStart = () => {
-    setIsAnimating(true);
-  };
-
-  const handleAnimationComplete = () => {
-    if (!loop || itemsForRender.length <= 1) {
-      setIsAnimating(false);
-      return;
-    }
-    const lastCloneIndex = itemsForRender.length - 1;
-
-    if (position === lastCloneIndex) {
-      setIsJumping(true);
-      const target = 1;
-      setPosition(target);
-      x.set(-target * trackItemOffset);
-      requestAnimationFrame(() => {
-        setIsJumping(false);
-        setIsAnimating(false);
-      });
-      return;
-    }
-
-    if (position === 0) {
-      setIsJumping(true);
-      const target = items.length;
-      setPosition(target);
-      x.set(-target * trackItemOffset);
-      requestAnimationFrame(() => {
-        setIsJumping(false);
-        setIsAnimating(false);
-      });
-      return;
-    }
-
-    setIsAnimating(false);
-  };
-
-  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo): void => {
-    const { offset, velocity } = info;
-    const direction =
-      offset.x < -DRAG_BUFFER || velocity.x < -VELOCITY_THRESHOLD
-        ? 1
-        : offset.x > DRAG_BUFFER || velocity.x > VELOCITY_THRESHOLD
-          ? -1
-          : 0;
-
-    if (direction === 0) return;
-
-    setPosition(prev => {
-      const next = prev + direction;
-      const max = itemsForRender.length - 1;
-      return Math.max(0, Math.min(next, max));
-    });
-  };
-
-  const dragProps = loop
-    ? {}
-    : {
-      dragConstraints: {
-        left: -trackItemOffset * Math.max(itemsForRender.length - 1, 0),
-        right: 0
-      }
-    };
-
-  const activeIndex =
-    items.length === 0 ? 0 : loop ? (position - 1 + items.length) % items.length : Math.min(position, items.length - 1);
-
+function AccordionItem({
+  faq,
+  isOpen,
+  onClick,
+}: {
+  faq: { question: string; answer: string };
+  isOpen: boolean;
+  onClick: () => void;
+}) {
   return (
     <div
-      ref={containerRef}
-      className={`relative overflow-hidden flex flex-col ${round ? 'rounded-full border border-white' : 'rounded-[24px] border border-[#F4A119]'
-        }`}
+      onClick={onClick}
       style={{
-        width: `${baseWidth}px`,
-        height: round ? `${baseWidth}px` : '400px',
-        paddingTop: `${containerPadding}px`,
-        paddingBottom: `${containerPadding}px`,
-        paddingLeft: `${containerPadding}px`,
+        cursor: "pointer",
+        borderRadius: 18,
+        background: isOpen ? "#ffffff" : "#f5f5f3",
+        border: isOpen ? "1px solid #e8e8e6" : "1px solid transparent",
+        boxShadow: isOpen
+          ? "0 4px 32px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04)"
+          : "none",
+        transition: "box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease",
+        overflow: "hidden",
       }}
     >
-      <motion.div
-        className="flex flex-1"
-        drag={isAnimating ? false : 'x'}
-        {...dragProps}
-        style={{
-          width: itemWidth,
-          gap: `${GAP}px`,
-          perspective: 1000,
-          perspectiveOrigin: `${position * trackItemOffset + itemWidth / 2}px 50%`,
-          x
-        }}
-        onDragEnd={handleDragEnd}
-        animate={{ x: -(position * trackItemOffset) }}
-        transition={effectiveTransition}
-        onAnimationStart={handleAnimationStart}
-        onAnimationComplete={handleAnimationComplete}
-      >
-        {itemsForRender.map((item, index) => (
-          <CarouselItem
-            key={`${item?.id ?? index}-${index}`}
-            item={item}
-            index={index}
-            itemWidth={itemWidth}
-            round={round}
-            trackItemOffset={trackItemOffset}
-            x={x}
-            transition={effectiveTransition}
-          />
-        ))}
-      </motion.div>
-      <div
-        className={`flex w-full justify-center ${round ? 'absolute z-20 bottom-12 left-1/2 -translate-x-1/2' : 'mb-14'}`}
-        style={{ marginTop: round ? 0 : '25px' }}
-      >
-        <div className="flex justify-center gap-2">
-          {items.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`h-2 w-2 rounded-full cursor-pointer transition-colors duration-150 ${activeIndex === index
-                ? 'bg-white'
-                : 'bg-[rgba(255,255,255,0.4)]'
-                }`}
-              animate={{
-                scale: activeIndex === index ? 1.2 : 1
-              }}
-              onClick={() => setPosition(loop ? index + 1 : index)}
-              transition={{ duration: 0.15 }}
-            />
-          ))}
+      {/* Header */}
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "20px 28px",
+      }}>
+        <span style={{
+          fontSize: 15,
+          fontWeight: isOpen ? 600 : 500,
+          color: isOpen ? "#0f0f0f" : "#6b6b6b",
+          lineHeight: 1.4,
+          transition: "color 0.2s ease",
+          fontFamily: "'DM Sans', sans-serif",
+        }}>
+          {faq.question}
+        </span>
+
+        <div style={{
+          marginLeft: 20,
+          flexShrink: 0,
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          background: isOpen ? "#0f0f0f" : "#e4e4e1",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+          transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1), background 0.2s ease",
+          willChange: "transform",
+        }}>
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke={isOpen ? "#fff" : "#888"} strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Answer — GPU-only transform, zero reflow */}
+      <div style={{
+        display: "grid",
+        gridTemplateRows: isOpen ? "1fr" : "0fr",
+        transition: "grid-template-rows 0.28s cubic-bezier(0.4,0,0.2,1)",
+        willChange: "grid-template-rows",
+      }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{
+            opacity: isOpen ? 1 : 0,
+            transform: isOpen ? "translateY(0)" : "translateY(-6px)",
+            transition: "opacity 0.22s ease, transform 0.22s ease",
+            willChange: "opacity, transform",
+          }}>
+            <p style={{
+              margin: 0,
+              padding: "0 28px 20px",
+              fontSize: 14,
+              color: "#71717a",
+              lineHeight: 1.75,
+              fontFamily: "'DM Sans', sans-serif",
+            }}>
+              {faq.answer}
+            </p>
+          </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@400;500;600&display=swap');
+        * { box-sizing: border-box; }
+      `}</style>
+
+      <section style={{
+        background: "transparent",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "96px 80px",
+        minHeight: "100vh",
+        fontFamily: "'DM Sans', sans-serif",
+      }}>
+        <div style={{ width: "100%", maxWidth: 1100, display: "flex", gap: 96, alignItems: "flex-start" }}>
+
+          {/* Left */}
+          <div style={{ flexShrink: 0, width: 220, position: "sticky", top: 112 }}>
+            <span style={{
+              display: "block", fontSize: 11, fontWeight: 600,
+              letterSpacing: "0.2em", color: "#a1a1aa",
+              textTransform: "uppercase", marginBottom: 20,
+            }}>
+              Support
+            </span>
+            <h2 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 84, fontWeight: 900,
+              lineHeight: 0.9, letterSpacing: "-0.03em",
+              color: "#ffffff", margin: 0,
+            }}>
+              FAQs
+            </h2>
+            <div style={{ marginTop: 32, width: 32, height: 3, borderRadius: 999, background: "#ffffff" }} />
+            <p style={{ marginTop: 20, fontSize: 14, color: "#a1a1aa", lineHeight: 1.65 }}>
+              Everything you need to know about our platform.
+            </p>
+          </div>
+
+          {/* Right */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10 }}>
+            {faqs.map((faq, i) => (
+              <AccordionItem
+                key={i}
+                faq={faq}
+                isOpen={openIndex === i}
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              />
+            ))}
+            <p style={{ marginTop: 16, fontSize: 13, color: "#a1a1aa", paddingLeft: 4 }}>
+              Still have questions?{" "}
+              <a href="#" style={{ color: "#27272a", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                Talk to our team →
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

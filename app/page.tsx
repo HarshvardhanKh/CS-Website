@@ -109,14 +109,9 @@ export default function Home() {
 
 
 
-      <div className="flex items-center justify-center w-full" style={{ height: '550px', position: 'relative' }}>
+      <div>
         <Carousel
-          baseWidth={1000}
-          autoplay
-          autoplayDelay={3000}
-          pauseOnHover
-          loop
-          round={false}
+          
         />
       </div>
 
