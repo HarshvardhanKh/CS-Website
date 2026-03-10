@@ -1,9 +1,5 @@
 "use client";
-
-import dynamic from 'next/dynamic';
 import { Skiper19 } from "@/src/components/ui/stroke";
-
-const CardStack = dynamic(() => import("@/src/components/common/CardStack"), { ssr: false });
 
 import LandoBackground from "@/components/LineBackground";
 
@@ -20,9 +16,6 @@ export default function Home() {
             </div>
       <div>
         <Skiper19 />        
-      </div>
-      <div>
-        <CardStack />
       </div>
     </>
   );
