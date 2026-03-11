@@ -25,18 +25,22 @@ export default function HorizontalGallery() {
     if (!scroller.current || !wrapper.current) return;
     const wrapperEl = wrapper.current;
 
+    // Normalize scroll so GSAP pin works alongside Lenis
+    ScrollTrigger.normalizeScroll(true);
+
     const ctx = gsap.context(() => {
       const sections = gsap.utils.toArray<HTMLElement>('.skill-set');
 
       // Main horizontal scroll animation
+      // end = (number of sections - 1) * viewport width so we scroll exactly one screen per section
       const st = ScrollTrigger.create({
         trigger: scroller.current,
         pin: true,
-        scrub: 0.8,
+        scrub: 1,
         snap: 1 / (sections.length - 1),
         invalidateOnRefresh: true,
         anticipatePin: 1,
-        end: () => '+=' + scroller.current!.offsetWidth,
+        end: () => '+=' + (sections.length - 1) * window.innerWidth,
         animation: gsap.to(sections, {
           xPercent: -100 * (sections.length - 1),
           ease: 'none',
