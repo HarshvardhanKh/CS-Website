@@ -94,7 +94,7 @@ export default function Home() {
       <div>
         <ImpactText />
       </div>
-      <div>
+      <div className="mt-32">
         <HorizontalGallery />
       </div>
       <div>

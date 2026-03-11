@@ -101,6 +101,7 @@ export default function ImpactText() {
           </motion.h2>
         </div>
       </section>
+      <br /><br /><br /><br /><br />
     </>
   );
 }
