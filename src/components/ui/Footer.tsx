@@ -38,10 +38,10 @@ export default function Footer() {
   }, []);
 
   const quickLinks = [
-    { name: 'About Us', href: '#about' },
-    { name: 'Events', href: '#events' },
-    { name: 'Our Team', href: '#team' },
-    { name: 'FAQ', href: '#faq' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Events', href: '/events' },
+    { name: 'Our Team', href: '/team' },
+    { name: 'FAQ', href: '/home' },
   ];
 
   const resources = [
@@ -55,7 +55,7 @@ export default function Footer() {
     { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/ieee-cs-muj' },
     { name: 'Instagram', icon: Instagram, href: 'https://instagram.com/ieee_csmuj' },
     { name: 'GitHub', icon: Github, href: 'https://github.com/IEEECSMUJ' },
-    { name: 'WhatsApp', icon: MessageCircle, href: '#' },
+    { name: 'WhatsApp', icon: MessageCircle, href: 'https://chat.whatsapp.com/GHqC5oT8x0w6ogNy94fhuI' },
   ];
 
   const colStyle: React.CSSProperties = {
