@@ -12,15 +12,7 @@ const Logo3D = dynamic(() => import("@/src/components/common/Logo3D"), {
     ssr: false,
 });
 
-/**
- * LogoScrollWrapper
- *
- * Layout:
- *   – "About Us" text sits on the LEFT (handled in page.tsx stickyHero)
- *   – Logo starts on the RIGHT side of the viewport
- *   – As user scrolls ~1800px, logo curves right → center → left
- *   – Settles on the left where the "Who We Are" section lives
- */
+
 export default function LogoScrollWrapper() {
     const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +45,7 @@ export default function LogoScrollWrapper() {
             scrollTrigger: {
                 trigger: "#about-scroll-canvas",
                 start: "top top",
-                end: "bottom bottom",   // canvas is calc(100vh + 1800px) → 1800px travel
+                end: "bottom bottom",   
                 scrub: 1.5,
                 invalidateOnRefresh: true,
             },
@@ -73,7 +65,7 @@ export default function LogoScrollWrapper() {
             duration: 1,
         });
 
-        // ── Hide when ChairpersonSection starts covering Who We Are ────────
+        //Hide when ChairpersonSection starts
         const hideTrigger = ScrollTrigger.create({
             trigger: "#about-content-section",
             start: "bottom 85%",

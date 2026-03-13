@@ -12,10 +12,10 @@ function Model() {
   useEffect(() => {
     if (!ref.current) return;
 
-    // Tilt face toward camera (model was flat in XZ plane)
+    // Tilt face toward camera 
     ref.current.rotation.x = Math.PI / 2;
 
-    // Paint all meshes IEEE orange
+    //color
     ref.current.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({
@@ -27,7 +27,7 @@ function Model() {
     });
   }, []);
 
-  // Constant auto-spin on Z — logo face spins like a coin
+  // Constant auto-spin on Z 
   useFrame((_, delta) => {
     if (!ref.current) return;
     ref.current.rotation.z += delta * 0.5;
