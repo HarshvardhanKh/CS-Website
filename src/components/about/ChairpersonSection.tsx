@@ -15,7 +15,7 @@ export default function ChairpersonSection() {
         const section = sectionRef.current;
         if (!section) return;
 
-        // ── Exact StackedSections pattern ──────────────────────────────────
+        // Exact StackedSections pattern 
         const panel1El = document.getElementById("about-content-section");
         let bgTrigger: ReturnType<typeof ScrollTrigger.create> | null = null;
 
@@ -45,10 +45,10 @@ export default function ChairpersonSection() {
 
     return (
         <section ref={sectionRef} className={styles.section}>
-            {/* Three-column grid: title | photo | quote */}
+            {/* Three-column grid: title photo quote */}
             <div className={styles.grid}>
 
-                {/* ── Left: label + title ── */}
+                {/* ── Left: label title*/}
                 <div className={styles.titleCol}>
                     <span className={styles.eyebrow}>A Message From Our</span>
                     <h2 className={styles.title}>
@@ -56,7 +56,7 @@ export default function ChairpersonSection() {
                     </h2>
                 </div>
 
-                {/* ── Center: full-bleed portrait ── */}
+                {/* enter: full-bleed portrait */}
                 <div className={styles.photoCol}>
                     <Image
                         src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
@@ -72,7 +72,7 @@ export default function ChairpersonSection() {
                     <div className={styles.photoFadeBottom} />
                 </div>
 
-                {/* ── Right: quote ── */}
+                {/* Right quote */}
                 <div className={styles.quoteCol}>
                     <p className={styles.quote}>
                         &ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

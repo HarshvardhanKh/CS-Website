@@ -1,17 +1,15 @@
-/* ── Chairperson Section — light, editorial layout ── */
 
 .section {
     position: relative;
     z-index: 20;
     min-height: 100vh;
-    background: #f2f0eb;           /* off-white, warm paper tone */
+    background: #f9ebc7;           
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-/* ── Three-column grid ── */
 .grid {
     display: grid;
     grid-template-columns: 28% 40% 32%;
@@ -19,7 +17,7 @@
     align-items: center;
 }
 
-/* ── Left: label + title ── */
+/*Left: label + title*/
 .titleCol {
     padding: 8vh 5vw 8vh calc((100vw - min(95vw, 1300px)) / 2 + 28px);
     display: flex;
@@ -47,7 +45,7 @@
     font-family: Georgia, 'Times New Roman', serif;
 }
 
-/* ── Center: full-height portrait ── */
+/*Center: full-height portrait*/
 .photoCol {
     position: relative;
     height: 100vh;
@@ -55,12 +53,11 @@
 }
 
 .photo {
-    mix-blend-mode: multiply;     /* blends into the off-white bg */
+    mix-blend-mode: multiply;    
     object-position: top center;
     filter: grayscale(20%);
 }
 
-/* Gradient fades on left, right edges and bottom to blend into bg */
 .photoFadeLeft {
     position: absolute;
     top: 0; left: 0;
