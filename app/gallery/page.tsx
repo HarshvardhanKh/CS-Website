@@ -27,6 +27,10 @@ export default function Gallery() {
     loop={false}
     controls={false}
     className="w-full h-full object-cover"
+    style={{
+      filter: 'grayscale(100%) brightness(0.6) blur(1px)',
+      transform: 'scale(1.02)',
+    }}
   />
   <div
     className="absolute inset-0 flex items-center justify-center pointer-events-none"
