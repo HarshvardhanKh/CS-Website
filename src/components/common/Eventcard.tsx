@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 interface Exhibition {
   id: number;
@@ -134,13 +135,12 @@ export default function PastExhibitions() {
             <span className="italic text-zinc-400">exhibitions</span>
           </h2>
 
-          <a
+          <Link
             href="/events/calendar"
-            onClick={(e) => e.preventDefault()}
             className="text-sm text-zinc-500 tracking-widest uppercase flex items-center gap-2"
           >
             View calendar
-          </a>
+          </Link>
         </div>
 
         {/* Grid */}
