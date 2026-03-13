@@ -194,9 +194,8 @@ export default function Navbar() {
                     >
                       <Link
                         href={item.href}
-                        className={`${style.navLink} ${
-                          pathname === item.href ? style.activeLink : ""
-                        }`}
+                        className={`${style.navLink} ${pathname === item.href ? style.activeLink : ""
+                          }`}
                         onClick={() => setMenuOpen(false)}
                       >
                         <NorrisText text={item.name} cascadeIndex={idx} />

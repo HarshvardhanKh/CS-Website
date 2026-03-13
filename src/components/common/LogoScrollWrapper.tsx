@@ -15,9 +15,11 @@ const Logo3D = dynamic(() => import("@/src/components/common/Logo3D"), {
 /**
  * LogoScrollWrapper
  *
- * - Logo div is position:fixed, animated via MotionPath during the scroll canvas
- * - A separate ScrollTrigger watches #about-page-wrapper and hides the logo
- *   via visibility:hidden when we scroll past it (onLeave), and restores on scroll back (onEnterBack)
+ * Layout:
+ *   – "About Us" text sits on the LEFT (handled in page.tsx stickyHero)
+ *   – Logo starts on the RIGHT side of the viewport
+ *   – As user scrolls ~1800px, logo curves right → center → left
+ *   – Settles on the left where the "Who We Are" section lives
  */
 export default function LogoScrollWrapper() {
     const wrapperRef = useRef<HTMLDivElement>(null);
@@ -28,27 +30,31 @@ export default function LogoScrollWrapper() {
 
         const vw = () => window.innerWidth;
         const vh = () => window.innerHeight;
+        const logoW = () => el.offsetWidth;
         const logoH = () => el.offsetHeight;
 
-        const startX = () => vw() * 0.55;
-        const startY = () => vh() * 0.5 - logoH() * 0.5;
-        // Drop down, then curve LEFT staying low
-        const mid1X = () => vw() * 0.45;     // slightly left from start
-        const mid1Y = () => vh() * 0.75;      // DROP down
-        const mid2X = () => vw() * 0.20;      // sweep left
-        const mid2Y = () => vh() * 0.70;      // stay low — minimal rise
-        const endX = () => vw() * 0.015;     // far left
-        const endY = () => vh() - logoH() * 0.85; // dock near bottom of viewport
+        // ── START: right side, vertically centered (alongside "About Us") ──
+        const startX = () => vw() - logoW() - 40;          // ~40px from right edge
+        const startY = () => vh() * 0.5 - logoH() * 0.5;  // vertically centered
 
-        gsap.set(el, { x: startX(), y: startY() });
+        // ── MID: sweep through center ──────────────────────────────────────
+        const mid1X = () => vw() * 0.50 - logoW() * 0.5;  // exact center
+        const mid1Y = () => vh() * 0.55 - logoH() * 0.5;  // slight downward drift
 
-        // 1. MOTION PATH ANIMATION — scrubbed to the scroll canvas
+        // ── END: left side, lined up with "Who We Are" heading ────────────
+        const endX = () => vw() * 0.03;                    // ~3% from left edge
+        const endY = () => vh() * 0.5 - logoH() * 0.5;    // vertically centered
+
+        // ── Set initial position ───────────────────────────────────────────
+        gsap.set(el, { x: startX(), y: startY(), autoAlpha: 1 });
+
+        // ── GSAP motion path, scrubbed to 1800px scroll canvas ────────────
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#about-scroll-canvas",
                 start: "top top",
-                end: "bottom bottom",
-                scrub: 1.2,
+                end: "bottom bottom",   // canvas is calc(100vh + 1800px) → 1800px travel
+                scrub: 1.5,
                 invalidateOnRefresh: true,
             },
         });
@@ -56,21 +62,20 @@ export default function LogoScrollWrapper() {
         tl.to(el, {
             motionPath: {
                 path: [
-                    { x: startX(), y: startY() },
-                    { x: mid1X(), y: mid1Y() },
-                    { x: mid2X(), y: mid2Y() },
-                    { x: endX(), y: endY() },
+                    { x: startX(), y: startY() },   // right side
+                    { x: mid1X(), y: mid1Y() },      // center
+                    { x: endX(), y: endY() },      // left side
                 ],
-                curviness: 1.4,
+                curviness: 1.2,
                 autoRotate: false,
             },
             ease: "power1.inOut",
             duration: 1,
         });
 
-        // 2. HIDE TRIGGER — fade out logo as ChairpersonSection enters
+        // ── Hide when ChairpersonSection starts covering Who We Are ────────
         const hideTrigger = ScrollTrigger.create({
-            trigger: "#about-page-wrapper",
+            trigger: "#about-content-section",
             start: "bottom 85%",
             onEnter: () => gsap.to(el, { autoAlpha: 0, duration: 0.5, ease: "power1.inOut" }),
             onLeaveBack: () => gsap.to(el, { autoAlpha: 1, duration: 0.4, ease: "power1.inOut" }),
@@ -91,8 +96,8 @@ export default function LogoScrollWrapper() {
                 position: "fixed",
                 top: 0,
                 left: 0,
-                width: "clamp(350px, 42vw, 640px)",
-                height: "clamp(350px, 42vw, 640px)",
+                width: "clamp(240px, 30vw, 440px)",
+                height: "clamp(240px, 30vw, 440px)",
                 pointerEvents: "none",
                 zIndex: 10,
                 willChange: "transform",

@@ -56,7 +56,7 @@ export default function Home() {
           animated={true}
         />
       </div>
-{/* Line 2 
+      {/* Line 2 
       <AnimatePresence mode="wait">
         {showIntro ? (
           <motion.div
@@ -108,7 +108,7 @@ export default function Home() {
 
       <div>
         <Carousel
-          
+
         />
       </div>
       <div>
