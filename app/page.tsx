@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+const StackingImage = dynamic(() => import("@/src/components/common/StackingImage"), { ssr: false });
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import FAQ from "@/components/FAQ";
@@ -97,9 +98,23 @@ export default function Home() {
       <div className="mt-32">
         <HorizontalGallery />
       </div>
-      <div>
-        <CardStack />
+
+
+      {/*CardStack pinned*/}
+      <div className="relative">
+        <div className="sticky top-0 z-0">
+          <CardStack />
+        </div>
+        <div className="relative z-10">
+          <StackingImage
+            src="/images/events/3.png"
+            alt="Events"
+            targetId="card-stack-section"
+          />
+        </div>
       </div>
+
+
       <div>
         <ProjectCard />
       </div>
@@ -107,9 +122,9 @@ export default function Home() {
 
       <div>
         <FAQ
-
         />
       </div>
+
       <div>
         <Newsletter />
       </div>
