@@ -10,6 +10,7 @@ const HorizontalGallery = dynamic(() => import("@/src/app/gallery/HorizontalGall
 const CardStack = dynamic(() => import("@/src/components/common/CardStack"), { ssr: false });
 const ProjectCard = dynamic(() => import("@/src/components/common/ProjectCard"), { ssr: false });
 const LandingText = dynamic(() => import("@/src/components/common/LandingText"), { ssr: false });
+const Hero3D = dynamic(() => import("@/src/components/common/Hero3D"), { ssr: false });
 import SmoothScrollProvider from "@/src/components/common/SmoothScrollProvider";
 import LineBackground from "@/components/LineBackground";
 import Newsletter from "@/components/Newsletter";
@@ -93,7 +94,8 @@ export default function Home() {
       </AnimatePresence>
 
 */}
-      <div>
+      <div className="relative">
+        <Hero3D />
         <LandingText />
       </div>
       <div className="mt-32">
