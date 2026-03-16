@@ -11,6 +11,8 @@ const CardStack = dynamic(() => import("@/src/components/common/CardStack"), { s
 const ProjectCard = dynamic(() => import("@/src/components/common/ProjectCard"), { ssr: false });
 const LandingText = dynamic(() => import("@/src/components/common/LandingText"), { ssr: false });
 import SmoothScrollProvider from "@/src/components/common/SmoothScrollProvider";
+const NewComponent = dynamic(() => import("@/src/components/common/newComponent"),{ ssr: false });
+
 import LineBackground from "@/components/LineBackground";
 import Newsletter from "@/components/Newsletter";
 
@@ -99,8 +101,9 @@ export default function Home() {
       <div className="mt-32">
         <HorizontalGallery />
       </div>
-
-
+      <div>
+        <NewComponent />
+      </div>
       {/*CardStack pinned*/}
       <div className="relative">
         <div className="sticky top-0 z-0">
@@ -116,6 +119,7 @@ export default function Home() {
       </div>
 
 
+      
       <div>
         <ProjectCard />
       </div>
