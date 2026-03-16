@@ -7,15 +7,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function lerpColor(from: string, to: string, t: number): string {
-  const f = parseInt(from.slice(1), 16);
-  const e = parseInt(to.slice(1), 16);
-  const r = Math.round(((f >> 16) & 0xff) + (((e >> 16) & 0xff) - ((f >> 16) & 0xff)) * t);
-  const g = Math.round(((f >> 8) & 0xff) + (((e >> 8) & 0xff) - ((f >> 8) & 0xff)) * t);
-  const b = Math.round((f & 0xff) + ((e & 0xff) - (f & 0xff)) * t);
-  return `rgb(${r},${g},${b})`;
-}
-
 export default function HorizontalGallery() {
   const scroller = useRef<HTMLDivElement | null>(null);
   const wrapper = useRef<HTMLDivElement | null>(null);
@@ -33,12 +24,6 @@ export default function HorizontalGallery() {
         trigger: scroller.current,
         pin: true,
         scrub: 1,
-
-
-        // snap: 1 / (sections.length - 1),(causing autoscroll)******
-
-
-
         invalidateOnRefresh: true,
         anticipatePin: 1,
         end: () => '+=' + (sections.length - 1) * window.innerWidth,
@@ -74,7 +59,6 @@ export default function HorizontalGallery() {
         },
       });
 
-      // Animate section 2 elements from bottom-right
       const section2Items = gsap.utils.toArray<HTMLElement>('.skill-set:nth-child(2) > div');
       gsap.set(section2Items, { y: 120, x: 60, opacity: 0 });
 
@@ -103,7 +87,15 @@ export default function HorizontalGallery() {
   }, []);
 
   return (
-    <div ref={wrapper} className="overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0)' }}>
+    <div
+      ref={wrapper}
+      className="overflow-hidden"
+      style={{
+        backgroundColor: "rgba(255,255,255,0)",
+        maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+      }}
+    >
       <div
         ref={scroller}
         className="flex w-[200vw] min-h-screen text-white relative bg-transparent"
@@ -148,8 +140,8 @@ export default function HorizontalGallery() {
           </div>
 
           <div className="absolute right-[0px] top-[120px] w-[28vw] h-[45vh]">
-            <p className="text-[#f9ba1f] text-[12px]">It doesn’t matter where</p>
-            <p className="text-[#f9ba1f] text-[12px]">you start, it’s how you</p>
+            <p className="text-[#f9ba1f] text-[12px]">It doesn't matter where</p>
+            <p className="text-[#f9ba1f] text-[12px]">you start, it's how you</p>
             <p className="text-[#f9ba1f] text-[12px]">progress from there.</p>
           </div>
         </section>
@@ -157,8 +149,7 @@ export default function HorizontalGallery() {
         {/* SECTION 2 */}
         <section className="skill-set relative w-screen h-full flex items-center justify-center px-12">
           <div className="absolute left-[100px] top-[150px] w-[18vw] h-[18vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              MONACO, 2023</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">MONACO, 2023</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baa798e2cc6e02ac38a_ln-home-horiz-4-p-500.webp"
               alt="Image 4"
@@ -168,9 +159,9 @@ export default function HorizontalGallery() {
               priority
             />
           </div>
+
           <div className="absolute left-[180px] bottom-[180px] w-[27vw] h-[27vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              BRITAIN, 2025</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">BRITAIN, 2025</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68da85d632bfefc552a0faac_Britain-25%20(1).webp"
               alt="Image 5"
@@ -180,9 +171,9 @@ export default function HorizontalGallery() {
               priority
             />
           </div>
+
           <div className="absolute left-[570px] bottom-[80px] w-[25vw] h-[25vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              BATTERSEA, 2024</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">BATTERSEA, 2024</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baa14a96f3cdd2f9a95_ln-home-horiz-6-p-500.webp"
               alt="Image 6"
@@ -192,9 +183,9 @@ export default function HorizontalGallery() {
               priority
             />
           </div>
+
           <div className="absolute right-[720px] top-[180px] w-[20vw] h-[20vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              HIGH PERFORMANCE GALA, 2024</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">HIGH PERFORMANCE GALA, 2024</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302bab3ee6e26b1f434a7d_ln-home-horiz-7.webp"
               alt="Image 7"
@@ -204,9 +195,9 @@ export default function HorizontalGallery() {
               priority
             />
           </div>
+
           <div className="absolute right-[200px] top-[150px] w-[30vw] h-[48vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              BARCELONA, 2024</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">BARCELONA, 2024</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302baaedf821dd2e3a7c74_ln-home-horiz-8-p-500.webp"
               alt="Image 8"
@@ -216,14 +207,15 @@ export default function HorizontalGallery() {
               priority
             />
           </div>
+
           <div className="absolute right-[200px] bottom-[180px] w-[30vw] h-[10vh]">
             <p className="text-[#f9ba1f] text-[22px] p-0">Since I was 7 years old and had my first</p>
-            <p className="text-[#f9ba1f] text-[22px] p-0">experience with kart racing, I’ve worked</p>
+            <p className="text-[#f9ba1f] text-[22px] p-0">experience with kart racing, I've worked</p>
             <p className="text-[#f9ba1f] text-[22px] p-0">tirelessly to make that dream come true.</p>
           </div>
+
           <div className="absolute right-[40px] bottom-[130px] w-[10vw] h-[25vh]">
-            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">
-              BARCELONA, 2024</p>
+            <p className="text-[#f9ba1f] text-[7px] translate-y-[-25px]">BARCELONA, 2024</p>
             <Image
               src="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/68302bab4f762cdbc5e93415_ln-home-horiz-10.webp"
               alt="Image 9"

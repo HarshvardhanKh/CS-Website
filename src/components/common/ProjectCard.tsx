@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Barlow_Condensed, Barlow } from 'next/font/google';
 
 function progressToBg(t: number): string {
-  const alpha = Math.min(0.8, Math.max(0, t));
+  const alpha = Math.min(0.85, Math.max(0, t));
   return `rgba(255,255,255,${alpha})`;
 }
 
@@ -69,10 +69,17 @@ const ArrowIcon = () => (
 );
 
 const Card = ({ image, title, description, github }: CardProps) => {
+  const githubUrl = github ?? "https://github.com";
+
   return (
-    <div className={`w-full h-full rounded-[7px] overflow-hidden bg-[#111] border border-[#222] shadow-[0_20px_60px_rgba(0,0,0,0.4)] relative transition-colors duration-[250ms] ease-in hover:bg-[#F4A119] hover:border-[#F4A119] cursor-pointer group flex flex-col ${barlow.className}`}>
+    <div
+      className={`w-full h-full rounded-[7px] overflow-hidden bg-[#111] border border-[#222] shadow-[0_20px_60px_rgba(0,0,0,0.4)] relative transition-colors duration-[250ms] ease-in hover:bg-[#F4A119] hover:border-[#F4A119] cursor-pointer group flex flex-col ${barlow.className}`}
+    >
       <div style={{ padding: "14px 14px 2px 14px" }} className="w-full">
-        <div className="relative w-full rounded-[8px] overflow-hidden" style={{ height: "clamp(100px, 28vw, 200px)" }}>
+        <div
+          className="relative w-full rounded-[8px] overflow-hidden"
+          style={{ height: "clamp(100px, 28vw, 200px)" }}
+        >
           <Image
             src={image}
             alt={title}
@@ -84,7 +91,9 @@ const Card = ({ image, title, description, github }: CardProps) => {
 
       <div style={{ padding: "14px" }} className="flex-1 flex flex-col">
         <div className="flex items-center justify-between mb-[10px]">
-          <h2 className={`font-extrabold text-[30px] sm:text-[38px] tracking-[0.03em] uppercase text-white leading-none m-0 flex overflow-hidden ${barlowCondensed.className}`}>
+          <h2
+            className={`font-extrabold text-[30px] sm:text-[38px] tracking-[0.03em] uppercase text-white leading-none m-0 flex overflow-hidden ${barlowCondensed.className}`}
+          >
             {title.split("").map((char, index) => (
               <span
                 key={index}
@@ -100,18 +109,10 @@ const Card = ({ image, title, description, github }: CardProps) => {
               </span>
             ))}
           </h2>
+
           <div className="flex items-center justify-center text-white shrink-0">
-            <a
-              href={github || "https://github.com"}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="inline-block"
-            >
-              <span
-                className="inline-block relative overflow-hidden transition-transform duration-[400ms] ease-[cubic-bezier(0.19,1,0.22,1)] flex items-center justify-center"
-                style={{ transitionDelay: `${title.length * 30}ms` }}
-              >
+            <a href={githubUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center justify-center">
+              <span className="inline-flex relative overflow-hidden items-center justify-center" style={{ transitionDelay: `${title.length * 30}ms` }}>
                 <span className="inline-flex transition-transform duration-[400ms] group-hover:-translate-y-full items-center justify-center">
                   <ArrowIcon />
                 </span>
@@ -123,7 +124,7 @@ const Card = ({ image, title, description, github }: CardProps) => {
           </div>
         </div>
 
-        <p className="text-[13px] sm:text-[15px] leading-[1.55] text-white/90 font-normal m-0 p-0 transition-colors duration-[250ms] font-medium">
+        <p className="text-[13px] sm:text-[15px] leading-[1.55] text-white/90 font-medium m-0 p-0 transition-colors duration-[250ms]">
           {description}
         </p>
       </div>
@@ -152,15 +153,17 @@ const MobileGrid = ({ onProgress }: { onProgress: (p: number) => void }) => {
 
   return (
     <section ref={sectionRef} className="w-full py-[40px] px-4">
-      <h2 style={{
-        textAlign: "center",
-        fontWeight: "bold",
-        color: "white",
-        fontSize: "clamp(1.6rem, 6vw, 3rem)",
-        letterSpacing: "3px",
-        textTransform: "uppercase",
-        marginBottom: "1.5rem",
-      }}>
+      <h2
+        style={{
+          textAlign: "center",
+          fontWeight: "bold",
+          color: "white",
+          fontSize: "clamp(1.6rem, 6vw, 3rem)",
+          letterSpacing: "3px",
+          textTransform: "uppercase",
+          marginBottom: "1.5rem",
+        }}
+      >
         Our Projects
       </h2>
       <div className="grid grid-cols-2 gap-[12px]">
@@ -209,18 +212,20 @@ const DesktopScroll = ({ onProgress }: { onProgress: (p: number) => void }) => {
   return (
     <div ref={containerRef} style={{ height: `${cards.length * 100}vh` }} className="relative">
       <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center px-4 md:px-8">
-        <h2 style={{
-          textAlign: "center",
-          fontWeight: "bold",
-          color: "white",
-          fontSize: "clamp(1.8rem, 5vmin, 3rem)",
-          letterSpacing: "3px",
-          textTransform: "uppercase",
-          marginBottom: "2rem",
-          opacity: visibleCount > 0 ? 1 : 0,
-          transform: visibleCount > 0 ? "translateY(0px)" : "translateY(40px)",
-          transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1)",
-        }}>
+        <h2
+          style={{
+            textAlign: "center",
+            fontWeight: "bold",
+            color: "white",
+            fontSize: "clamp(1.8rem, 5vmin, 3rem)",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
+            marginBottom: "2rem",
+            opacity: visibleCount > 0 ? 1 : 0,
+            transform: visibleCount > 0 ? "translateY(0px)" : "translateY(40px)",
+            transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.19, 1, 0.22, 1)",
+          }}
+        >
           Our Projects
         </h2>
         <div className="max-w-7xl mx-auto flex flex-wrap justify-center gap-[20px]">
@@ -270,6 +275,8 @@ const CascadingCards = () => {
       style={{
         backgroundColor: bgColor,
         transition: "background-color 0.05s linear",
+        maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
       }}
     >
       {isMobile
