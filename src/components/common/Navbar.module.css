@@ -256,18 +256,16 @@
     }
 
     .overlayContent {
-        flex-direction: column-reverse;
-        justify-content: flex-start;
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
         padding-top: 140px;
         padding-bottom: 80px;
-        gap: 80px;
+        gap: 0;
     }
 
     .gridSection {
-        flex: none;
-        width: 100%;
-        min-height: auto;
+        display: none;
     }
 
     .photoGrid {

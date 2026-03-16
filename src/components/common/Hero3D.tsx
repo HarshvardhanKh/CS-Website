@@ -1,43 +1,46 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import React, { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, Environment, ContactShadows, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useEffect } from "react";
 
-function HeroModel() {
+import { useScroll, useTransform } from "framer-motion";
+
+function HeroModel({ scrollContainerRef }: { scrollContainerRef?: React.RefObject<HTMLElement | null> }) {
   const { scene } = useGLTF("/Hero.glb");
   const ref = useRef<THREE.Group>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start start", "end end"]
+  });
+  
+  // Animate through the entire pin duration (0 to 1)
+  const scale = useTransform(scrollYProgress, [0, 1], [4, 2]);
+  const zPos = useTransform(scrollYProgress, [0, 1], [-2, -20]);
+
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.scale.setScalar(scale.get());
+      ref.current.position.z = zPos.get();
+    }
+  });
 
   return (
     <primitive 
       ref={ref} 
       object={scene} 
-      scale={4} 
-      position={[0, 0, -2]} 
       rotation={[Math.PI / 2, 0, 0]} 
     />
   );
 }
 
 function IEEEModel() {
-  const { scene } = useGLTF("/logos/ieee.glb");
+  const { scene } = useGLTF("");
   const ref = useRef<THREE.Group>(null);
 
-  useEffect(() => {
-    if (!scene) return;
-    
-    scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({
-          color: new THREE.Color("#F4A119"),
-          roughness: 0.35,
-          metalness: 0.4,
-        });
-      }
-    });
-  }, [scene]);
 
   return (
     <primitive 
@@ -50,7 +53,7 @@ function IEEEModel() {
   );
 }
 
-export default function Hero3D() {
+export default function Hero3D({ scrollContainerRef }: { scrollContainerRef?: React.RefObject<HTMLElement | null> }) {
   return (
     <div className="w-full h-screen relative overflow-hidden flex items-center justify-center">
       <Canvas
@@ -67,8 +70,7 @@ export default function Hero3D() {
           intensity={1.2}
         />
         <Suspense fallback={null}>
-          <HeroModel />
-          <IEEEModel />
+          <HeroModel scrollContainerRef={scrollContainerRef} />
           <Environment preset="city" />
         </Suspense>
       </Canvas>

@@ -3,17 +3,18 @@
 import dynamic from "next/dynamic";
 const StackingImage = dynamic(() => import("@/src/components/common/StackingImage"), { ssr: false });
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FAQ from "@/components/FAQ";
 const TeamCard = dynamic(() => import("@/src/app/team/TeamCard"), { ssr: false });
 const HorizontalGallery = dynamic(() => import("@/src/app/gallery/HorizontalGallery"), { ssr: false });
 const CardStack = dynamic(() => import("@/src/components/common/CardStack"), { ssr: false });
 const ProjectCard = dynamic(() => import("@/src/components/common/ProjectCard"), { ssr: false });
 const LandingText = dynamic(() => import("@/src/components/common/LandingText"), { ssr: false });
-const Hero3D = dynamic(() => import("@/src/components/common/Hero3D"), { ssr: false });
+const Hero3D = dynamic(() => import("@/src/components/common/Hero3D"), { ssr: false }) as any;
 import SmoothScrollProvider from "@/src/components/common/SmoothScrollProvider";
 import LineBackground from "@/components/LineBackground";
 import Newsletter from "@/components/Newsletter";
+import ScrollVelocity from "@/components/ScrollVelocity";
 
 const HELLO_LANGUAGES = [
   "नमस्ते",
@@ -32,6 +33,7 @@ const TOTAL_INTRO = HELLO_LANGUAGES.length * WORD_DURATION + 1000;
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const heroPinRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,6 +59,27 @@ export default function Home() {
           lineCount={14}
           animated={true}
         />
+      </div>
+     
+  
+      {/* Pinning Wrapper for Hero Section */}
+      <div ref={heroPinRef} className="relative h-[200vh] z-10">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+          {/* ScrollVelocity (behind) */}
+          <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+            <ScrollVelocity
+              texts={['We Are IEEE CS,', 'We Are IEEE CS']} 
+              velocity={100}
+              className="custom-scroll-text"
+              scrollContainerRef={heroPinRef}
+            />
+          </div>
+          
+          {/* Hero3D (foreground) */}
+          <div className="relative z-10 w-full h-full">
+            <Hero3D scrollContainerRef={heroPinRef} />
+          </div>
+        </div>
       </div>
       {/* Line 2 
       <AnimatePresence mode="wait">
@@ -94,8 +117,8 @@ export default function Home() {
       </AnimatePresence>
 
 */}
-      <div className="relative">
-        <Hero3D />
+      {/* LandingText and subsequent content */}
+      <div className="relative z-20">
         <LandingText />
       </div>
       <div className="mt-32">
