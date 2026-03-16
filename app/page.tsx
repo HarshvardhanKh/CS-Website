@@ -81,7 +81,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Line 2 
+      
       <AnimatePresence mode="wait">
         {showIntro ? (
           <motion.div
@@ -116,7 +116,7 @@ export default function Home() {
         ) : null}
       </AnimatePresence>
 
-*/}
+
       {/* LandingText and subsequent content */}
       <div className="relative z-20">
         <LandingText />
@@ -145,7 +145,7 @@ export default function Home() {
         <ProjectCard />
       </div>
 
-        <div><Newsletter/></div>
+        <div className="mt-24"><Newsletter/></div>
 
         <div><FAQ/></div>
 
