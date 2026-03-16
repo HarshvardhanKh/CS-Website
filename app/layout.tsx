@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "ieee cs muj website",
 };
 
+import Preloader from "@/src/components/common/Preloader";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
         suppressHydrationWarning
       >
-
+        <Preloader />
         <Navbar />
         <main className="flex-grow">
           {children}
