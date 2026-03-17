@@ -72,12 +72,22 @@ export default function HeroImageSequence({ scrollContainerRef }: { scrollContai
             loadedCount++;
             if (loadedCount === totalFrames) {
                 setImages(loadedImages);
-                renderFrame(0); // Render first frame
             }
         };
         loadedImages[i - 1] = img;
     }
   }, []);
+
+  useEffect(() => {
+    if (images.length === totalFrames) {
+        const currentProgress = scrollYProgress.get();
+        const frameIndex = Math.min(
+            totalFrames - 1,
+            Math.floor(currentProgress * totalFrames)
+        );
+        renderFrame(frameIndex);
+    }
+  }, [images]);
 
   const renderFrame = (index: number) => {
     const canvas = canvasRef.current;
