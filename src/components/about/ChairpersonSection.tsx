@@ -70,6 +70,7 @@ export default function ChairpersonSection() {
                     <div className={styles.photoFadeLeft} />
                     <div className={styles.photoFadeRight} />
                     <div className={styles.photoFadeBottom} />
+                    <div className={styles.photoFadeTop} />
                 </div>
 
                 {/* Right quote */}

@@ -29,6 +29,13 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
 
     lenisRef.current = lenis
 
+    // Force scroll to top on mount and after Lenis init
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+    lenis.scrollTo(0, { immediate: true })
+
     // Store the listener so we can remove it
     const handleLenisScroll = () => ScrollTrigger.update()
     lenis.on('scroll', handleLenisScroll)

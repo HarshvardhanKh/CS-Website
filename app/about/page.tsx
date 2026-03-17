@@ -45,7 +45,7 @@ export default function AboutPage() {
         </div>
 
         <div className={styles.navContainer}>
-          <div className="text-white ml-auto max-w-[55%]">
+          <div className="text-white w-full lg:w-fit lg:ml-auto max-w-full md:max-w-[80%] lg:max-w-[55%] px-6 sm:px-0">
             <h2
               className={`font-semibold tracking-tight leading-snug uppercase mb-8 ${styles.whoWeAreTitle}`}
             >

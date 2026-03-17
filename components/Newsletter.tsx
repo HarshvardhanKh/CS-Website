@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface NewsletterEdition {
@@ -32,32 +32,70 @@ const Card = () => {
     },
   ];
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <StyledWrapper>
-      <div className="container">
-        {editions.map((edition, index) => (
-          <a
-            key={index}
-            href={edition.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-link"
-          >
-            <div
-              data-text={edition.title}
-              style={{ ["--r" as any]: edition.rotation }}
-              className="glass"
+    <div
+      ref={sectionRef}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0px)" : "translateY(60px)",
+        transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.19, 1, 0.22, 1)",
+      }}
+    >
+      <h2 style={{
+        textAlign: "center",
+        fontWeight: "bold",
+        color: "white",
+        fontSize: "clamp(1.8rem, 5vmin, 3rem)",
+        letterSpacing: "3px",
+        textTransform: "uppercase",
+        marginBottom: "2rem",
+        paddingTop: "2rem",
+      }}>
+        Our Newsletter
+      </h2>
+      <StyledWrapper>
+        <div className="container">
+          {editions.map((edition, index) => (
+            <a
+              key={index}
+              href={edition.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-link"
             >
-              <img
-                src={edition.image}
-                alt={edition.title}
-                className="glass-image"
-              />
-            </div>
-          </a>
-        ))}
-      </div>
-    </StyledWrapper>
+              <div
+                data-text={edition.title}
+                style={{ ["--r" as any]: edition.rotation }}
+                className="glass"
+              >
+                <img
+                  src={edition.image}
+                  alt={edition.title}
+                  className="glass-image"
+                />
+              </div>
+            </a>
+          ))}
+        </div>
+      </StyledWrapper>
+    </div>
   );
 };
 
@@ -126,6 +164,34 @@ const StyledWrapper = styled.div`
     z-index: 10;
     backdrop-filter: blur(5px);
   }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 1024px) {
+    .container .glass {
+      width: 220px;
+      height: 320px;
+      margin: 0 -60px;
+    }
+  }
+
+  /* Tablet */
+@media (max-width: 768px) {
+  .container .glass {
+    width: 180px;
+    height: 260px;
+    margin: 0 -45px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .container .glass {
+    width: 140px;
+    height: 210px;
+    margin: 0 -35px;
+  }
+}
 `;
 
 export default Card;

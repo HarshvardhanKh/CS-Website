@@ -33,6 +33,13 @@ export default function SmoothScrollProvider({
 
         lenisRef.current = lenis;
 
+        // Force scroll to top on mount and after Lenis init
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+        lenis.scrollTo(0, { immediate: true });
+
         const handleLenisScroll = () => ScrollTrigger.update();
         lenis.on("scroll", handleLenisScroll);
 

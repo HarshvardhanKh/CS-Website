@@ -39,3 +39,20 @@
 .whoWeAreTitle {
     font-size: clamp(1.5rem, 3vw, 2.5rem);
 }
+
+@media (max-width: 1024px) {
+    .navContainer {
+        justify-content: flex-start;
+    }
+    .contentSection {
+        padding-top: 5vh;
+        padding-bottom: 5vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .stickyHero {
+        padding-left: 5vw;
+        justify-content: center;
+    }
+}

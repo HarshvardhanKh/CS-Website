@@ -43,26 +43,40 @@ export default function CardStack() {
   }, []);
 
   return (
-    <section ref={containerRef} id="card-stack-section" className={styles.container}>
-      <div className={`${styles.cards} ${open ? styles.open : ""}`}>
-        {images.map((src, index) => (
-          <div key={index} className={styles.card}>
-            <img
-              src={src}
-              alt={`card-${index}`}
-              draggable="false"
-              loading="eager"
-              decoding="async"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                display: "block",
-              }}
-            />
-          </div>
-        ))}
-      </div>
-    </section>
+    <div id="card-stack-section">
+      <h2 style={{
+        textAlign: "center",
+        fontWeight: "bold",
+        color: "white",
+        fontSize: "clamp(1.8rem, 5vmin, 3rem)",
+        letterSpacing: "3px",
+        textTransform: "uppercase",
+        marginBottom: "2rem",
+        paddingTop: "3rem",
+      }}>
+        Our Events
+      </h2>
+      <section ref={containerRef} className={styles.container} style={{ minHeight: "100vh", paddingBottom: "10rem", paddingTop: "4rem" }}>
+        <div className={`${styles.cards} ${open ? styles.open : ""}`}>
+          {images.map((src, index) => (
+            <div key={index} className={styles.card}>
+              <img
+                src={src}
+                alt={`card-${index}`}
+                draggable="false"
+                loading="eager"
+                decoding="async"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

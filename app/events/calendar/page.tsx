@@ -127,13 +127,9 @@ export default function RollingSections() {
 
       <section
         ref={section2Ref}
-        className="flex items-center justify-center bg-black text-white relative z-20"
+        className="relative items-center justify-center bg-black text-white relative z-20"
       >
-        <img
-          src="/images/events/tear.svg"
-          alt="tear divider"
-          className="w-full -translate-y-[60vh] opacity-100 overflow-hidden"
-        />
+        
       </section>
 
       <section className={styles.calendarSection}>
