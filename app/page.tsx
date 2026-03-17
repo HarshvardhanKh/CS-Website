@@ -10,7 +10,7 @@ const HorizontalGallery = dynamic(() => import("@/src/app/gallery/HorizontalGall
 const CardStack = dynamic(() => import("@/src/components/common/CardStack"), { ssr: false });
 const ProjectCard = dynamic(() => import("@/src/components/common/ProjectCard"), { ssr: false });
 const LandingText = dynamic(() => import("@/src/components/common/LandingText"), { ssr: false });
-const Hero3D = dynamic(() => import("@/src/components/common/Hero3D"), { ssr: false }) as any;
+const HeroImageSequence = dynamic(() => import("@/src/components/common/HeroImageSequence"), { ssr: false });
 import SmoothScrollProvider from "@/src/components/common/SmoothScrollProvider";
 const NewComponent = dynamic(() => import("@/src/components/common/newComponent"),{ ssr: false });
 
@@ -77,9 +77,9 @@ export default function Home() {
             />
           </div>
           
-          {/* Hero3D (foreground) */}
+        {/* HeroImageSequence (foreground) */}
           <div className="relative z-10 w-full h-full">
-            <Hero3D scrollContainerRef={heroPinRef} />
+            <HeroImageSequence scrollContainerRef={heroPinRef} />
           </div>
         </div>
       </div>

@@ -12,10 +12,8 @@ function Model() {
   useEffect(() => {
     if (!ref.current) return;
 
-    // Tilt face toward camera 
     ref.current.rotation.x = Math.PI / 2;
 
-    //color
     ref.current.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         (child as THREE.Mesh).material = new THREE.MeshStandardMaterial({
@@ -26,8 +24,7 @@ function Model() {
       }
     });
   }, []);
-
-  // Constant auto-spin on Z 
+ 
   useFrame((_, delta) => {
     if (!ref.current) return;
     ref.current.rotation.z += delta * 0.5;
