@@ -30,19 +30,7 @@ export default function Event() {
     }, []);
   return (
     <>
-      {/* <section className="relative min-h-screen bg-gradient-to-b from-gray-500 to-black overflow-hidden">
 
-        <div className="absolute inset-0 z-0">
-          
-        </div>
-
-        <TornEdge />
-
-      </section>
-
-      <section className="relative bg-black overflow-hidden">
-        <Eventcard />
-      </section> */}
       <section
         ref={landingRef}
         className="h-screen sticky top-0 flex items-center justify-between px-32 bg-[#1a1a1a] text-white z-10 relative"
@@ -57,16 +45,13 @@ export default function Event() {
         <img
         src="/images/events/tear.svg"
         alt="tear divider"
-        className="absolute w-full -translate-y-[60vh] opacity-100"
+        className="absolute w-full -top-[200px] opacity-100"
       />
-      <section className=" bg-black w-screen overflow-hidden z-30">
+      <section className=" bg-black w-screen overflow-hidden z-40 flex items-center justify-center">
         <Eventcard />
       </section>
       </section>
-
-      {/* <section className="relative bg-black overflow-hidden">
-        <Eventcard />
-      </section> */}
+      
     </>
   );
 }
