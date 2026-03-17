@@ -34,11 +34,7 @@ export default function NewComponent() {
       ref={sectionRef}
       className="relative h-screen flex items-center justify-center gap-[10vh]"
     >
-      <img
-        src="/images/events/curve.svg"
-        alt="curve divider"
-        className="absolute w-[400vh] -translate-y-[36vh] translate-x-[5px] opacity-100 pointer-events-none"
-      />
+      
 
       {/* Text */}
       <div className="flex flex-col justify-center gap-10 w-[40vw] h-[80vh]">
