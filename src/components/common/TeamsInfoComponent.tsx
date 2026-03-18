@@ -3,13 +3,11 @@ import { useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 import LineBackground from "@/components/LineBackground";
 
-// ─── Easing ──────────────────────────────────────────────────────────────────
 
 function easeOutExpo(x: number) {
   return x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
 }
 
-// ─── CountUp (RAF-based, no useInView dependency) ────────────────────────────
 
 interface CountUpProps {
   to: number;
@@ -51,7 +49,6 @@ function CountUp({ to, from = 0, delay = 0, duration = 1400, separator = "", sta
   return <span ref={ref} />;
 }
 
-// ─── Stats data ──────────────────────────────────────────────────────────────
 
 const STATS = [
   { label: "Members",   value: 1500, ticks: 15, delay: 0    },
@@ -60,7 +57,6 @@ const STATS = [
   { label: "Mentors",   value: 10,   ticks: 5,  delay: 0.45 },
 ] as const;
 
-// ─── ParticleCanvas ──────────────────────────────────────────────────────────
 
 function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -134,7 +130,6 @@ function ParticleCanvas() {
   );
 }
 
-// ─── StatCell ────────────────────────────────────────────────────────────────
 
 function StatCell({
   label,
@@ -154,14 +149,12 @@ function StatCell({
 
   useEffect(() => {
     if (!isInView) return;
-    // Trigger reveal wipe
     const revealTimeout = setTimeout(() => {
       if (revealRef.current) {
         revealRef.current.style.transform = "scaleX(0)";
       }
     }, delay * 1000 + 50);
 
-    // Animate ticks in sync with count-up
     const duration = 1400;
     const startTime = performance.now() + delay * 1000;
     let rafId = 0;
@@ -189,31 +182,25 @@ function StatCell({
   }, [delay, ticks, isInView]);
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden border-r border-b border-white/[0.06] p-10 group transition-colors duration-300 hover:bg-white/[0.02] [&:nth-child(2)]:border-r-0 [&:nth-child(4)]:border-r-0 [&:nth-child(3)]:border-b-0 [&:nth-child(4)]:border-b-0">
-      {/* Reveal wipe overlay */}
+    <div ref={containerRef} className="relative overflow-hidden border-b border-white/[0.06] border-r p-6 md:p-10 group transition-colors duration-300 hover:bg-white/[0.02] [&:nth-child(2)]:border-r-0 [&:nth-child(4)]:border-r-0 md:[&:nth-child(2)]:border-r-0 md:[&:nth-child(4)]:border-r-0 [&:nth-child(3)]:border-b-0 [&:nth-child(4)]:border-b-0 md:[&:nth-child(3)]:border-b-0 md:[&:nth-child(4)]:border-b-0">
+      
       <div
         ref={revealRef}
         className="absolute inset-0 bg-white/[0.03] origin-left z-10 pointer-events-none"
         style={{ transition: "transform 1s cubic-bezier(0.16, 1, 0.3, 1)" }}
       />
-
-      {/* Ghost background number */}
       <div
         className="absolute bottom-[-16px] right-[-8px] font-black text-white/[0.025] group-hover:text-white/[0.05] transition-colors duration-300 select-none pointer-events-none leading-none tracking-[-8px] z-0"
         style={{ fontSize: "clamp(100px, 22vw, 200px)" }}
       >
         {value}
       </div>
-
-      {/* Label */}
       <p
         className="relative z-[1] uppercase tracking-[4px] font-light text-white/35 mb-3"
-        style={{ fontSize: "16px" }}
+        style={{ fontSize: "clamp(12px, 2vw, 16px)" }}
       >
         {label}
       </p>
-
-      {/* Number */}
       <div className="relative z-[1] flex items-baseline gap-1 leading-none">
         <div
           className="font-black text-white tracking-[-4px] leading-none tabular-nums"
@@ -236,29 +223,26 @@ function StatCell({
         </span>
       </div>
 
-      {/* Tick dots */}
-      <div className="relative z-[1] flex gap-1.5 mt-5">
+      <div className="relative z-[1] flex flex-wrap gap-1.5 mt-5">
         {Array.from({ length: ticks }).map((_, i) => (
           <div
             key={i}
             ref={(el) => { tickRefs.current[i] = el; }}
-            className="w-1 h-1 rounded-full"
+            className="w-1 h-1 rounded-full shrink-0"
             style={{ background: "rgba(255,255,255,0.15)" }}
           />
         ))}
       </div>
 
-      {/* Bottom hover line */}
       <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-white group-hover:w-full transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]" />
     </div>
   );
 }
 
-// ─── TeamsInfoComponent ───────────────────────────────────────────────────────
 
 export default function TeamsInfoComponent() {
   return (
-    <div className="relative h-screen flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-screen py-20 lg:py-0 lg:h-screen flex flex-col lg:flex-row items-center justify-center overflow-x-hidden lg:overflow-hidden">
       <div className="absolute inset-0 -z-10">
         <LineBackground
           lineColor="rgba(180, 140, 60, 0.4)"
@@ -268,21 +252,19 @@ export default function TeamsInfoComponent() {
         />
       </div>
 
-      {/* Left column */}
-      <div className="flex flex-col items-start gap-10 w-[40vw] h-[80vh]">
-        <h1 className="font-bold text-[#f9a71f] text-6xl">IEEE CS MUJ</h1>
-        <h1 className="text-[#f9a71f] text-6xl -translate-y-10">Since 2019</h1>
+      <div className="flex flex-col items-center lg:items-start gap-6 lg:gap-10 w-full lg:w-[40vw] px-6 lg:px-0 mb-12 lg:mb-0">
+        <h1 className="font-bold text-[#f9a71f] text-4xl md:text-5xl lg:text-6xl text-center lg:text-left">IEEE CS MUJ</h1>
+        <h1 className="text-[#f9a71f] text-4xl md:text-5xl lg:text-6xl text-center lg:text-left lg:-translate-y-10">Since 2019</h1>
         <img
-          className="h-[50vh] object-contain"
+          className="h-[30vh] md:h-[40vh] lg:h-[50vh] object-contain"
           src="/images/events/2.png"
           alt="img"
         />
       </div>
 
-      {/* Right column – stats grid */}
-      <div className="relative w-[50vw] h-[80vh]">
+      <div className="relative w-full lg:w-[50vw] px-4 lg:px-0">
         <ParticleCanvas />
-        <div className="relative z-[1] w-full h-full grid grid-cols-2 grid-rows-2">
+        <div className="relative z-[1] w-full grid grid-cols-2 grid-rows-2">
           {STATS.map(({ label, value, ticks, delay }) => (
             <StatCell
               key={label}
