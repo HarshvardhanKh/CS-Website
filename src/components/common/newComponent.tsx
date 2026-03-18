@@ -35,8 +35,6 @@ export default function NewComponent() {
       className="relative h-screen flex items-center justify-center gap-[10vh]"
     >
       
-
-      {/* Text */}
       <div className="flex flex-col justify-center gap-10 w-[40vw] h-[80vh]">
         <h1 className="font-bold text-[#f9a71f] text-6xl">
           World <br /> Drivers'
