@@ -7,7 +7,7 @@ import { useGLTF, Environment, Float } from "@react-three/drei";
 
 import * as THREE from "three";
 
-function Model({ url }: { url: string }) {
+function Model({ url, scale = 0.35, position = [0, 0, 0] }: { url: string; scale?: number; position?: [number, number, number] }) {
   const { scene } = useGLTF(url);
   const modelRef = useRef<THREE.Group>(null);
   
@@ -36,8 +36,8 @@ function Model({ url }: { url: string }) {
       <primitive 
         ref={modelRef}
         object={scene} 
-        scale={0.35} 
-        position={[0, 0, 0]} 
+        scale={scale} 
+        position={position} 
         rotation={[Math.PI / 2, 0, Math.PI / 2]} 
       />
     </Float>
@@ -57,6 +57,17 @@ export default function HeroImageSequence({ scrollContainerRef }: { scrollContai
   const sequenceOpacity = useTransform(scrollYProgress, [0, 0.94, 0.98], [1, 1, 0]);
   const modelOpacity = useTransform(scrollYProgress, [0.94, 0.98, 1], [0, 1, 1]);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1]);
+
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const totalFrames = 36;
 
@@ -96,19 +107,28 @@ export default function HeroImageSequence({ scrollContainerRef }: { scrollContai
     if (!ctx) return;
 
     const img = images[index];
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const dpr = window.devicePixelRatio || 1;
+    
+    // Set actual size in memory (scaled by DPR)
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    
+    // Scale CSS size
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
 
     const imgRatio = img.width / img.height;
     const canvasRatio = canvas.width / canvas.height;
     let drawWidth, drawHeight, offsetX, offsetY;
 
     if (canvasRatio > imgRatio) {
+        // Canvas is wider than image (relatively)
         drawWidth = canvas.width;
         drawHeight = canvas.width / imgRatio;
         offsetX = 0;
         offsetY = (canvas.height - drawHeight) / 2;
     } else {
+        // Canvas is taller than image (relatively)
         drawWidth = canvas.height * imgRatio;
         drawHeight = canvas.height;
         offsetX = (canvas.width - drawWidth) / 2;
@@ -130,18 +150,14 @@ export default function HeroImageSequence({ scrollContainerRef }: { scrollContai
   });
 
   useEffect(() => {
-    const handleResize = () => {
-        if (images.length === totalFrames) {
-            const currentFrame = Math.min(
-                totalFrames - 1,
-                Math.floor(scrollYProgress.get() * totalFrames)
-            );
-            renderFrame(currentFrame);
-        }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [images]);
+    if (images.length === totalFrames && windowSize.width > 0) {
+        const currentFrame = Math.min(
+            totalFrames - 1,
+            Math.floor(scrollYProgress.get() * totalFrames)
+        );
+        renderFrame(currentFrame);
+    }
+  }, [images, windowSize]);
 
   return (
     <div className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-transparent">
@@ -170,7 +186,11 @@ export default function HeroImageSequence({ scrollContainerRef }: { scrollContai
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} />
           <Suspense fallback={null}>
-            <Model url="/logos/ieee.glb" />
+            <Model 
+              url="/logos/ieee.glb" 
+              scale={windowSize.width < 768 ? 0.22 : 0.35} 
+              position={windowSize.width < 768 ? [0, 0, 0] : [0, 0, 0]} 
+            />
             <Environment preset="city" />
           </Suspense>
         </Canvas>

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-const StackingImage = dynamic(() => import("@/src/components/common/StackingImage"), { ssr: false });
+const TeamsInfoComponent = dynamic(() => import("@/src/components/common/TeamsInfoComponent"), { ssr: false });
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import FAQ from "@/components/FAQ";
@@ -13,7 +13,6 @@ const LandingText = dynamic(() => import("@/src/components/common/LandingText"),
 const HeroImageSequence = dynamic(() => import("@/src/components/common/HeroImageSequence"), { ssr: false });
 import SmoothScrollProvider from "@/src/components/common/SmoothScrollProvider";
 const NewComponent = dynamic(() => import("@/src/components/common/newComponent"),{ ssr: false });
-
 import LineBackground from "@/components/LineBackground";
 import Newsletter from "@/components/Newsletter";
 import ScrollVelocity from "@/components/ScrollVelocity";
@@ -135,11 +134,7 @@ export default function Home() {
           <CardStack />
         </div>
         <div className="relative z-10">
-          <StackingImage
-            src="/images/events/3.png"
-            alt="Events"
-            targetId="card-stack-section"
-          />
+          <TeamsInfoComponent />
         </div>
       </div>
 

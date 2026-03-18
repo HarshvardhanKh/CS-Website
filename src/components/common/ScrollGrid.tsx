@@ -8,6 +8,7 @@ import {
     MotionValue,
     AnimatePresence,
 } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive';
 
 const IMAGES = [
     'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
@@ -27,15 +28,14 @@ const IMAGES = [
     'https://images.unsplash.com/photo-1485470733090-0aae1788d5af?w=600&q=80',
 ];
 
-const HERO_INDEX = 7;
-const COLS = 5;
-
 interface CellProps {
     index: number;
     scrollProgress: MotionValue<number>;
     activeIndex: number | null;
     gridComplete: boolean;
     onClick: () => void;
+    cols: number;
+    heroIndex: number;
 }
 
 // Memoised — only re-renders when its own props change, not on every scroll tick
@@ -45,15 +45,17 @@ const GridCell = memo(function GridCell({
     activeIndex,
     gridComplete,
     onClick,
+    cols,
+    heroIndex,
 }: CellProps) {
-    const isHero = index === HERO_INDEX;
+    const isHero = index === heroIndex;
     const isActive = activeIndex === index;
     const hasActive = activeIndex !== null;
 
-    const col = index % COLS;
-    const row = Math.floor(index / COLS);
-    const heroCOL = HERO_INDEX % COLS;
-    const heroROW = Math.floor(HERO_INDEX / COLS);
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+    const heroCOL = heroIndex % cols;
+    const heroROW = Math.floor(heroIndex / cols);
     const dx = col - heroCOL;
     const dy = row - heroROW;
     const dist = Math.max(Math.abs(dx), Math.abs(dy));
@@ -69,7 +71,6 @@ const GridCell = memo(function GridCell({
     const heroScale = useTransform(scrollProgress, [0, 0.3], [2.5, 1]);
     const heroBorderRadius = useTransform(scrollProgress, [0, 0.3], [12, 4]);
 
-    const siblingOpacity = useTransform(scrollProgress, [0, enterStart, enterEnd], [0, 0, 1]);
     const siblingY = useTransform(scrollProgress, [enterStart, enterEnd], [`${dy * 80 + 40}px`, '0px']);
     const siblingX = useTransform(scrollProgress, [enterStart, enterEnd], [`${dx * 25}px`, '0px']);
     const siblingScale = useTransform(scrollProgress, [enterStart, enterEnd], [0.82, 1]);
@@ -139,6 +140,13 @@ export default function ScrollGrid() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [gridComplete, setGridComplete] = useState(false);
+    
+    // Check if on mobile view
+    const isMobile = useMediaQuery({ maxWidth: 767 });
+    
+    const cols = isMobile ? 3 : 5;
+    const heroIndex = isMobile ? 4 : 7;
+    const totalItems = isMobile ? 9 : 15;
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -227,17 +235,17 @@ export default function ScrollGrid() {
                     <div
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(5, 1fr)',
+                            gridTemplateColumns: `repeat(${cols}, 1fr)`,
                             gridAutoRows: 'auto',
                             gap: 'clamp(4px, 1.2vw, 16px)',
-                            width: 'min(96vw, 960px)',
+                            width: isMobile ? 'min(92vw, 400px)' : 'min(96vw, 960px)',
                             height: 'max-content',
                             alignContent: 'center',
                             zIndex: 20,
                             position: 'relative'
                         }}
                     >
-                        {Array.from({ length: 15 }).map((_, i) => (
+                        {Array.from({ length: totalItems }).map((_, i) => (
                             <GridCell
                                 key={i}
                                 index={i}
@@ -245,12 +253,14 @@ export default function ScrollGrid() {
                                 activeIndex={activeIndex}
                                 gridComplete={gridComplete}
                                 onClick={() => handleClick(i)}
+                                cols={cols}
+                                heroIndex={heroIndex}
                             />
                         ))}
                     </div>
                 </motion.div>
             </div>
-            <br /><br /><br /><br /><br />
+            <br /><br />
         </div>
         
     );

@@ -1,12 +1,10 @@
 'use client'
 
 import { useEffect } from 'react'
-
 import HeroSection from '@/src/app/team/HeroSection'
 import MainContent from '@/src/app/team/MainContent'
 import StackedSections from '@/src/app/team/StackedSections'
 import SmoothScrollProvider from '@/src/app/team/SmoothScrollProvider'
-import TeamsInfoComponent from '@/src/app/team/TeamsInfoComponent'
 
 export default function TeamPage() {
   useEffect(() => {
@@ -21,7 +19,6 @@ export default function TeamPage() {
       <main>
         <HeroSection />
         <MainContent />
-        <TeamsInfoComponent />
         <StackedSections />
       </main>
     </SmoothScrollProvider>
